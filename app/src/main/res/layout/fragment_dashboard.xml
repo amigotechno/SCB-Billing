@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/sign_in_to_continue_text"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_16sdp"
+        app:layout_constraintBottom_toBottomOf="@id/logoutBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logoutBtn"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@drawable/logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/generateLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_rectangle_grey"
+        android:minHeight="@dimen/_110sdp"
+        android:padding="12dp"
+        app:layout_constraintEnd_toStartOf="@id/collectLayout"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoutBtn">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/generateBill"
+            style="@style/title_primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="Generate Bill"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/generateImage" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/generateDesc"
+            style="@style/text_secondary_regular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:minLines="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/generateBill"
+            android:text="You can generate bill for consumer" />
+
+        <ImageView
+            android:id="@+id/generateImage"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/bill"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/collectLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_rectangle_grey"
+        android:minHeight="@dimen/_110sdp"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/generateLayout"
+        app:layout_constraintTop_toBottomOf="@id/logoutBtn">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/collectTitle"
+            style="@style/title_primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="Collect Bill"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/collectDesc"
+            style="@style/text_secondary_regular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:minLines="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/collectTitle"
+            android:text="You can collect bill from consumer" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/receipt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

@@ -1,0 +1,33 @@
+package com.scb.scbbillingandcollection.core.retrofit
+
+import com.scb.scbbillingandcollection.generate_bill.data.models.ConsumerListResponse
+import com.scb.scbbillingandcollection.auth.data.models.LoginRequest
+import com.scb.scbbillingandcollection.auth.data.models.LoginResponse
+import com.scb.scbbillingandcollection.auth.data.models.VersionResponse
+import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
+import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
+import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillRequest
+import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillResponse
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
+
+interface ApiInterface {
+
+    @GET("versionCheck.json")
+    suspend fun getPoliceStations(@Query("version") version: String): VersionResponse
+
+    @POST("userLogin.json")
+    suspend fun checkLogin(@Body request: LoginRequest): LoginResponse
+
+    @POST("getConsumersList.json")
+    suspend fun generateBillList(): ConsumerListResponse
+
+    @POST("viewBill.json")
+    suspend fun viewBill(@Body request: ViewBillRequest): ViewBillResponse
+
+    @POST("generateBill.json")
+    suspend fun generateBill(@Body request: GenerateBillRequest): GenerateBillResponse
+
+}

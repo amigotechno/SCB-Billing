@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.scb.scbbillingandcollection.auth.presentation.ui.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.scb.scbbillingandcollection.auth.presentation.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.scb.scbbillingandcollection.dashboard.DashboardFragment"
+        android:label="DashboardFragment" />
+
+    <navigation
+        android:id="@+id/generateBillGraph"
+        app:startDestination="@id/generateCanListFragment">
+
+        <fragment
+            android:id="@+id/generateCanListFragment"
+            android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.GenerateCanListFragment"
+            android:label="GenerateCanListFragment" >
+            <action
+                android:id="@+id/action_generateCanListFragment_to_generateBillFragment"
+                app:destination="@id/generateBillFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/generateBillFragment"
+            android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.GenerateBillFragment"
+            android:label="fragment_generate_bill"
+            tools:layout="@layout/fragment_generate_bill" >
+            <argument
+                android:name="canId"
+                app:argType="string"
+                android:defaultValue="0" />
+        </fragment>
+
+    </navigation>
+
+
+</navigation>

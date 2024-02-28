@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="text_primary_regular">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_primary_color</item>/>
+    </style>
+
+    <style name="text_secondary_regular">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>/>
+    </style>
+
+    <style name="title_primary_bold">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_primary_color</item>/>
+    </style>
+
+    <style name="title_primary">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>/>
+    </style>
+
+    <style name="text_secondary_bold">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_secondary</item>/>
+    </style>
+</resources>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_20sdp">
+
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_16sdp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@string/welcome_text"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2" />
+
+        <TextView
+            android:id="@+id/tvContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/sign_in_to_continue_text"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvWelcome" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMobile"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvContinue"
+            app:placeholderText="Mobile Number">
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_mobile_number_text"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="@+id/tilMobile"
+            app:layout_constraintStart_toStartOf="@+id/tilMobile"
+            app:layout_constraintTop_toBottomOf="@+id/tilMobile"
+            app:passwordToggleEnabled="true"
+            app:placeholderText="Password">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_pin_text"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_26sdp"
+            android:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            android:elevation="@dimen/_10sdp"
+            android:focusable="true"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/login"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:cornerRadius="4dp"
+            app:layout_constraintEnd_toEndOf="@+id/tilPin"
+            app:layout_constraintStart_toStartOf="@+id/tilPin"
+            app:layout_constraintTop_toBottomOf="@+id/tilPin" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

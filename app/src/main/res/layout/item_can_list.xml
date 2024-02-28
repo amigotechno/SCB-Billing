@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:strokeColor="@color/border"
+    android:layout_margin="@dimen/_5sdp"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/canNumber"
+            style="@style/title_primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="612169014" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/consumerName"
+            style="@style/text_primary_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/canNumber"
+            tools:text="B Sai Kumar" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/scbNo"
+            style="@style/text_primary_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/consumerName"
+            tools:text="612169014" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/phNo"
+            style="@style/text_primary_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@android:drawable/stat_sys_phone_call"
+            android:drawablePadding="@dimen/_10sdp"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scbNo"
+            tools:text="612169014" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/address"
+            style="@style/text_primary_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phNo"
+            tools:text="Hyderabad Khairathabad" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
+
+
