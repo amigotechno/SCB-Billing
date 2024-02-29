@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.EditText
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.scb.scbbillingandcollection.R
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
@@ -31,28 +33,29 @@ class CollectTypeFragment : Fragment() {
 
     private var selectedItem = ""
 
+    private val args: CollectTypeFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCollectTypeBinding.inflate(layoutInflater, container, false)
-        // Inflate the layout for this fragment
         ArrayAdapter.createFromResource(
             requireContext(), R.array.collect_types, android.R.layout.simple_spinner_item
         ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
             binding.collectType.adapter = adapter
         }
         selectedDate = Calendar.getInstance()
+
+        binding.balanceAmount.setText(args.customerResponse.payable_amount)
 
         binding.collectType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>, view: View?, position: Int, id: Long
             ) {
-                // Item selected from the spinner
                 selectedItem = parent.getItemAtPosition(position).toString()
                 when (selectedItem) {
+
                     "Cash" -> {
                         binding.details.isVisible = false
                     }
@@ -69,10 +72,8 @@ class CollectTypeFragment : Fragment() {
                         binding.ddDetails.isVisible = true
                     }
 
-
                 }
             }
-
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Another interface callback
@@ -85,6 +86,17 @@ class CollectTypeFragment : Fragment() {
 
         binding.ddDate.setOnClickListener {
             showDatePickerDialog(binding.ddDate)
+        }
+
+        binding.amount.addTextChangedListener {
+            if (it?.trim()?.isNotEmpty() == true) {
+                val double = args.customerResponse.payable_amount?.toDouble()
+                    ?.minus(it.toString().toDouble())
+                binding.balanceAmount.setText(double.toString())
+            } else {
+                binding.balanceAmount.setText(args.customerResponse.payable_amount)
+            }
+
         }
 
         return binding.root

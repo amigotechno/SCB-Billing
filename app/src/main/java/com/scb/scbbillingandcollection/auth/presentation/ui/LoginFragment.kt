@@ -64,14 +64,14 @@ class LoginFragment : Fragment() {
             }
         }
 
-        observerState(viewModel.loginResponse) {
+        observerSharedFlow(viewModel.loginResponse) {
             it.loginData?.let { response ->
                 response.apply {
                     appPreferences.token = token ?: ""
                     appPreferences.isLoggedIn = true
-                    appPreferences.name = user_data?.get(0)?.name ?: ""
-                    appPreferences.userId = user_data?.get(0)?.id.toString()
-                    appPreferences.roleId = user_data?.get(0)?.role_id.toString()
+                    appPreferences.name = user_data?.name ?: ""
+                    appPreferences.userId = user_data?.id.toString()
+                    appPreferences.roleId = user_data?.role_id.toString()
                 }
                 showCustomToast(R.drawable.ic_check_green, title = response.message ?: "Success")
                 findNavController().navigate(R.id.dashboardFragment)

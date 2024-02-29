@@ -4,7 +4,7 @@ data class LoginResponse(
     val error: Int?,
     val message: String?,
     val token: String?,
-    val user_data: List<UserData?>?
+    val user_data: UserData?
 ) {
     data class UserData(
         val created: String?,

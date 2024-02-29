@@ -38,7 +38,7 @@ class GenerateCanListFragment : Fragment() {
             findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToGenerateBillFragment(it.can_number.toString()))
 
         }else{
-            findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToCollectBillDetailsFragment(it.can_number.toString()))
+            findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToCollectBillDetailsFragment(it))
         }
           }
 

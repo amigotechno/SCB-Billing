@@ -23,8 +23,8 @@ class AuthViewModel @Inject constructor(private val repo: AuthRepository) :
     private val _versionResponse = MutableSharedFlow<AuthState.VersionData>()
     var versionResponse = _versionResponse.asSharedFlow()
 
-    private val _loginResponse = MutableStateFlow(AuthState.LoginData())
-    var loginResponse = _loginResponse.asStateFlow()
+    private val _loginResponse = MutableSharedFlow<AuthState.LoginData>()
+    var loginResponse = _loginResponse.asSharedFlow()
 
     override suspend fun bindActions() {
         actions.collectLatest { action ->
@@ -40,20 +40,14 @@ class AuthViewModel @Inject constructor(private val repo: AuthRepository) :
         when (val response = repo.loginCheck(request)) {
             is Resource.Success -> {
                 if (response.value.error == 0) {
-                    _loginResponse.update {
-                        it.copy(response.value, null)
-                    }
+                    _loginResponse.emit(AuthState.LoginData(response.value,null))
                 } else {
-                    _loginResponse.update {
-                        it.copy(null, response.value.message)
-                    }
+                    _loginResponse.emit(AuthState.LoginData(null,response.value.message))
                 }
             }
 
             is Resource.Failure -> {
-                _loginResponse.update {
-                    it.copy(null, response.errorBody.toString())
-                }
+                _loginResponse.emit(AuthState.LoginData(null,response.errorBody.toString()))
             }
 
             else -> {}
