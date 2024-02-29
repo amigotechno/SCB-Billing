@@ -1,5 +1,7 @@
 package com.scb.scbbillingandcollection.generate_bill.data.repository
 
+import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
+import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
 import com.scb.scbbillingandcollection.core.retrofit.ApiInterface
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.core.retrofit.SafeApiCall
@@ -39,6 +41,17 @@ class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: A
     override fun generateBill(request: GenerateBillRequest): Flow<Resource<GenerateBillResponse>> = flow{
         val response = safeApiCall {
             apiInterface.generateBill(request)
+        }
+        if (response is Resource.Success) {
+            emit(response)
+        } else {
+            emit(response as Resource.Failure)
+        }
+    }
+
+    override fun collectBill(request: CollectBillRequest): Flow<Resource<CollectBillResponse>> = flow{
+        val response = safeApiCall {
+            apiInterface.collectBill(request)
         }
         if (response is Resource.Success) {
             emit(response)

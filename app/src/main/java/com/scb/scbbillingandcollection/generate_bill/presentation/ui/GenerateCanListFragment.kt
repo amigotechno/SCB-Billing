@@ -8,9 +8,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.keka.xhr.core.app.di.CustomDialogQualifier
 import com.scb.scbbillingandcollection.R
+import com.scb.scbbillingandcollection.collect_bill.CollectBillDetailsFragment
 import com.scb.scbbillingandcollection.core.extensions.dismissCompact
 import com.scb.scbbillingandcollection.core.extensions.observerState
 import com.scb.scbbillingandcollection.core.extensions.showCompact
@@ -27,12 +29,18 @@ class GenerateCanListFragment : Fragment() {
     private var _binding: FragmentGenerateCanListBinding? = null
     private val binding get() = _binding!!
 
-    private val billViewModel : GenerateBillViewModel by navGraphViewModels(R.id.generateBillGraph) {defaultViewModelProviderFactory}
+    private val billViewModel : GenerateBillViewModel by navGraphViewModels(R.id.main_nav_graph) {defaultViewModelProviderFactory}
 
+    private val args: GenerateCanListFragmentArgs by navArgs()
     private val adapter = ConsumersListAdapter{
 
-        findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToGenerateBillFragment("06E476000004"))
-    }
+        if (args.fromGenerate){
+            findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToGenerateBillFragment(it.can_number.toString()))
+
+        }else{
+            findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToCollectBillDetailsFragment(it.can_number.toString()))
+        }
+          }
 
     @Inject
     @CustomDialogQualifier
@@ -57,7 +65,7 @@ class GenerateCanListFragment : Fragment() {
     private fun initObservers() {
         observerState(billViewModel.consumersList){
             it.data?.let {
-                if (it.isEmpty() == true){
+                if (it.isEmpty()){
                     showCustomToast(title = "No Data Found")
                 }
                 adapter.submitList(it)

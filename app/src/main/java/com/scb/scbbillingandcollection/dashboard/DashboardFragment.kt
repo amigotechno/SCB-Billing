@@ -31,7 +31,11 @@ class DashboardFragment : Fragment() {
 
         binding.name.text = appPreferences.name
         binding.generateLayout.clickWithDebounce{
-            findNavController().navigate(R.id.generateBillGraph)
+            findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToGenerateCanListFragment(true))
+        }
+
+        binding.collectLayout.clickWithDebounce{
+            findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToGenerateCanListFragment(false))
         }
         return binding.root
     }

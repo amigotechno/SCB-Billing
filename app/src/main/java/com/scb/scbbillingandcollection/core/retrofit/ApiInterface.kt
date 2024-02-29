@@ -4,6 +4,8 @@ import com.scb.scbbillingandcollection.generate_bill.data.models.ConsumerListRes
 import com.scb.scbbillingandcollection.auth.data.models.LoginRequest
 import com.scb.scbbillingandcollection.auth.data.models.LoginResponse
 import com.scb.scbbillingandcollection.auth.data.models.VersionResponse
+import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
+import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillRequest
@@ -29,5 +31,8 @@ interface ApiInterface {
 
     @POST("generateBill.json")
     suspend fun generateBill(@Body request: GenerateBillRequest): GenerateBillResponse
+
+    @POST("collectBill.json")
+    suspend fun collectBill(@Body request: CollectBillRequest): CollectBillResponse
 
 }

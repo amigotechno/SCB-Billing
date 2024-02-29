@@ -10,4 +10,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_internet_message">There\'s a problem with your internet connection. Please check and retry.</string>
     <string name="close">Close</string>
+
+    <string-array name="collect_types">
+        <item>Cash</item>
+        <item>Cheque</item>
+        <item>DD</item>
+    </string-array>
 </resources>

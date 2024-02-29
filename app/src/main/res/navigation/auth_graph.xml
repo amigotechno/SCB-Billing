@@ -18,33 +18,55 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.scb.scbbillingandcollection.dashboard.DashboardFragment"
-        android:label="DashboardFragment" />
+        android:label="DashboardFragment" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_generateCanListFragment"
+            app:destination="@id/generateCanListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/generateCanListFragment"
+        android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.GenerateCanListFragment"
+        android:label="GenerateCanListFragment">
+        <action
+            android:id="@+id/action_generateCanListFragment_to_generateBillFragment"
+            app:destination="@id/generateBillFragment" />
+        <action
+            android:id="@+id/action_generateCanListFragment_to_collectBillDetailsFragment"
+            app:destination="@id/collectBillDetailsFragment" />
+        <argument
+            android:name="fromGenerate"
+            app:argType="boolean"
+            android:defaultValue="false" />
 
-    <navigation
-        android:id="@+id/generateBillGraph"
-        app:startDestination="@id/generateCanListFragment">
+    </fragment>
 
-        <fragment
-            android:id="@+id/generateCanListFragment"
-            android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.GenerateCanListFragment"
-            android:label="GenerateCanListFragment" >
-            <action
-                android:id="@+id/action_generateCanListFragment_to_generateBillFragment"
-                app:destination="@id/generateBillFragment" />
-        </fragment>
-
-        <fragment
-            android:id="@+id/generateBillFragment"
-            android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.GenerateBillFragment"
-            android:label="fragment_generate_bill"
-            tools:layout="@layout/fragment_generate_bill" >
-            <argument
-                android:name="canId"
-                app:argType="string"
-                android:defaultValue="0" />
-        </fragment>
-
-    </navigation>
+    <fragment
+        android:id="@+id/generateBillFragment"
+        android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.GenerateBillFragment"
+        android:label="fragment_generate_bill"
+        tools:layout="@layout/fragment_generate_bill">
+        <argument
+            android:name="canId"
+            android:defaultValue="0"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectBillDetailsFragment"
+        android:name="com.scb.scbbillingandcollection.collect_bill.CollectBillDetailsFragment"
+        android:label="CollectBillDetailsFragment">
+        <argument
+            android:name="canId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_collectBillDetailsFragment_to_collectTypeFragment"
+            app:destination="@id/collectTypeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectTypeFragment"
+        android:name="com.scb.scbbillingandcollection.collect_bill.CollectTypeFragment"
+        android:label="fragment_collect_type"
+        tools:layout="@layout/fragment_collect_type" />
 
 
 </navigation>
