@@ -28,15 +28,15 @@
         android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.GenerateCanListFragment"
         android:label="GenerateCanListFragment">
         <action
-            android:id="@+id/action_generateCanListFragment_to_generateBillFragment"
-            app:destination="@id/generateBillFragment" />
-        <action
             android:id="@+id/action_generateCanListFragment_to_collectBillDetailsFragment"
             app:destination="@id/collectBillDetailsFragment" />
         <argument
             android:name="fromGenerate"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_generateCanListFragment_to_billDetailsFragment"
+            app:destination="@id/billDetailsFragment" />
 
     </fragment>
 
@@ -45,10 +45,20 @@
         android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.GenerateBillFragment"
         android:label="fragment_generate_bill"
         tools:layout="@layout/fragment_generate_bill">
+
+
         <argument
-            android:name="canId"
-            android:defaultValue="0"
+            android:name="request"
+            app:argType="com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest" />
+        <argument
+            android:name="charges"
             app:argType="string" />
+        <action
+            app:popUpTo="@+id/generateCanListFragment"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_generateFragment_to_generateCanListFragment"
+            app:destination="@id/generateCanListFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/collectBillDetailsFragment"
@@ -70,7 +80,25 @@
         <argument
             android:name="customerResponse"
             app:argType="com.scb.scbbillingandcollection.generate_bill.data.models.Consumers" />
+        <action
+            app:popUpTo="@+id/generateCanListFragment"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_collectTypeFragment_to_generateCanListFragment"
+            app:destination="@id/generateCanListFragment" />
 
+
+    </fragment>
+    <fragment
+        android:id="@+id/billDetailsFragment"
+        android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.BillDetailsFragment"
+        android:label="fragment_bill_details"
+        tools:layout="@layout/fragment_bill_details" >
+        <action
+            android:id="@+id/action_billDetailsFragment_to_generateBillFragment"
+            app:destination="@id/generateBillFragment" />
+        <argument
+            android:name="customerResponse"
+            app:argType="com.scb.scbbillingandcollection.generate_bill.data.models.Consumers" />
     </fragment>
 
 

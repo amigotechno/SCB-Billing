@@ -16,4 +16,11 @@
         <item>Cheque</item>
         <item>DD</item>
     </string-array>
+
+    <string-array name="meter_status">
+        <item>Metered</item>
+        <item>Locked</item>
+        <item>Repair</item>
+        <item>Un Metered</item>
+    </string-array>
 </resources>

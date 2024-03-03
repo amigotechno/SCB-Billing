@@ -6,6 +6,7 @@ import com.scb.scbbillingandcollection.auth.data.models.VersionResponse
 import com.scb.scbbillingandcollection.core.retrofit.ApiInterface
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.core.retrofit.SafeApiCall
+import com.scb.scbbillingandcollection.generate_bill.data.models.WardsResponse
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(private val api: ApiInterface) : SafeApiCall,

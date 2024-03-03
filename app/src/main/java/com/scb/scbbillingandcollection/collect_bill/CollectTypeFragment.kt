@@ -12,6 +12,7 @@ import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.scb.scbbillingandcollection.R
@@ -99,6 +100,10 @@ class CollectTypeFragment : Fragment() {
 
         }
 
+        binding.collectBtn.clickWithDebounce {
+            validations()
+        }
+
         return binding.root
     }
 
@@ -106,7 +111,7 @@ class CollectTypeFragment : Fragment() {
         observerSharedFlow(billViewModel.collectBillResponse) {
             it.data?.let {
                 showCustomToast(title = it)
-                binding.collectBtn.isVisible = false
+                findNavController().navigate(CollectTypeFragmentDirections.actionCollectTypeFragmentToGenerateCanListFragment(false))
             }
             it.error?.let {
                 showCustomToast(title = it)
@@ -133,10 +138,6 @@ class CollectTypeFragment : Fragment() {
         )
 
         datePickerDialog.show()
-
-        binding.collectBtn.clickWithDebounce {
-            validations()
-        }
     }
 
     fun validations() {
@@ -156,8 +157,8 @@ class CollectTypeFragment : Fragment() {
                     showCustomToast(title = "Enter Cheque Branch")
                 } else {
                     //do api call
-                    CollectBillRequest(
-                        can_id = "",
+                   val request =  CollectBillRequest(
+                        can_id = args.customerResponse.id.toString()?:"",
                         collect_type = selectedItem,
                         amount = amount.text.toString(),
                         cheque_no = chequeNo.text.toString(),
@@ -165,6 +166,7 @@ class CollectTypeFragment : Fragment() {
                         cheque_date = chequeDate.text.toString(),
                         cheque_branch = chequeBranch.text.toString()
                     )
+                    billViewModel.dispatch(GenerateBillViewModel.BillActions.CollectBill(request))
 
                 }
             } else if (selectedItem == "DD") {
@@ -178,8 +180,8 @@ class CollectTypeFragment : Fragment() {
                     showCustomToast(title = "Enter DD Branch")
                 } else {
                     //do api call
-                    CollectBillRequest(
-                        can_id = "",
+                   val request = CollectBillRequest(
+                        can_id = args.customerResponse.id.toString()?:"",
                         collect_type = selectedItem,
                         amount = amount.text.toString(),
                         dd_no = ddNo.text.toString(),
@@ -187,14 +189,16 @@ class CollectTypeFragment : Fragment() {
                         dd_date = ddDate.text.toString(),
                         dd_branch = ddBranch.text.toString()
                     )
+                    billViewModel.dispatch(GenerateBillViewModel.BillActions.CollectBill(request))
                 }
             } else {
                 //dp api call
-                CollectBillRequest(
-                    can_id = "",
+                val request = CollectBillRequest(
+                    can_id = args.customerResponse.id.toString()?:"",
                     collect_type = selectedItem,
                     amount = amount.text.toString()
                 )
+                billViewModel.dispatch(GenerateBillViewModel.BillActions.CollectBill(request))
             }
         }
 

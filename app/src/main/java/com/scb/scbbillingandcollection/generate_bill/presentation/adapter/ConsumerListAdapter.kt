@@ -25,7 +25,7 @@ class ConsumersListAdapter(private val onClick: (Consumers) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = currentList[position]
         holder.itemAttachmentBinding.apply {
-            phNo.text = currentItem.phone_no
+            phNo.text = currentItem.phone_no.toString().trim()
             address.text = currentItem.location
             canNumber.text = currentItem.can_number
             consumerName.text = currentItem.consumer_name

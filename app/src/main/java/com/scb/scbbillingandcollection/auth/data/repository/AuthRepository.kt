@@ -4,6 +4,7 @@ import com.scb.scbbillingandcollection.auth.data.models.LoginRequest
 import com.scb.scbbillingandcollection.auth.data.models.LoginResponse
 import com.scb.scbbillingandcollection.auth.data.models.VersionResponse
 import com.scb.scbbillingandcollection.core.retrofit.Resource
+import com.scb.scbbillingandcollection.generate_bill.data.models.WardsResponse
 
 interface AuthRepository {
 

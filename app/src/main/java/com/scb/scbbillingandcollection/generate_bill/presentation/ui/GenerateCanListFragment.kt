@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -12,7 +15,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.keka.xhr.core.app.di.CustomDialogQualifier
 import com.scb.scbbillingandcollection.R
-import com.scb.scbbillingandcollection.collect_bill.CollectBillDetailsFragment
+import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
+import com.scb.scbbillingandcollection.core.extensions.clickWithDebounce
 import com.scb.scbbillingandcollection.core.extensions.dismissCompact
 import com.scb.scbbillingandcollection.core.extensions.observerState
 import com.scb.scbbillingandcollection.core.extensions.showCompact
@@ -35,16 +39,20 @@ class GenerateCanListFragment : Fragment() {
     private val adapter = ConsumersListAdapter{
 
         if (args.fromGenerate){
-            findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToGenerateBillFragment(it.can_number.toString()))
+            findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToBillDetailsFragment(it))
 
         }else{
             findNavController().navigate(GenerateCanListFragmentDirections.actionGenerateCanListFragmentToCollectBillDetailsFragment(it))
         }
-          }
+    }
 
     @Inject
     @CustomDialogQualifier
     lateinit var dialog: AlertDialog
+
+    var selectedItem : Pair<String, String>? = null
+
+    var wardsList = ArrayList<Pair<String, String>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,10 +63,34 @@ class GenerateCanListFragment : Fragment() {
 
         binding.rvConsumers.adapter = adapter
         initObservers()
-        dialog.showCompact()
+//        dialog.showCompact()
         binding.search.addTextChangedListener {
             billViewModel.dispatch(GenerateBillViewModel.BillActions.SearchQuery(it.toString()))
         }
+
+        binding.serachBtn.clickWithDebounce {
+            if (selectedItem != null && selectedItem?.first != "0"){
+                val request  = CansRequest(selectedItem?.first?:"")
+                dialog.showCompact()
+                billViewModel.dispatch(GenerateBillViewModel.BillActions.GetCansList(request))
+            }else{
+                showCustomToast(title = "Select Ward and Search")
+            }
+
+        }
+        binding.wardNo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>, view: View?, position: Int, id: Long
+            ) {
+                selectedItem = wardsList[position]
+                billViewModel.spinnerPosition = position
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Another interface callback
+            }
+        }
+
         return binding.root
     }
 
@@ -74,6 +106,29 @@ class GenerateCanListFragment : Fragment() {
             it.error?.let {
                 showCustomToast(R.drawable.ic_error_warning, title = it)
                 dialog.dismissCompact()
+            }
+        }
+        observerState(billViewModel.wardsList){
+            it.data?.let {
+                if (it.isEmpty()){
+                    showCustomToast(title = "No Wards Found")
+                }
+                wardsList = it
+                val finalList = arrayListOf<String>()
+
+                for (i in it){
+                    finalList.add(i.second)
+                }
+
+                val adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, finalList)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.wardNo.adapter = adapter
+
+                binding.wardNo.setSelection(billViewModel.spinnerPosition)
+
+            }
+            it.error?.let {
+                showCustomToast(R.drawable.ic_error_warning, title = it)
             }
         }
     }

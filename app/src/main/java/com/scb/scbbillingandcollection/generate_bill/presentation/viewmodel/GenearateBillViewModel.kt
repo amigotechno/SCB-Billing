@@ -1,6 +1,9 @@
 package com.scb.scbbillingandcollection.generate_bill.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.core.base.ActionViewModel
 import com.scb.scbbillingandcollection.core.base.BaseAction
@@ -27,24 +30,60 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
     private var _consumersList = MutableStateFlow(BillState.ConsumerList())
     val consumersList = _consumersList.asStateFlow()
 
-    private var _viewBillResponse = MutableStateFlow(BillState.ViewBill())
-    val viewBillResponse = _viewBillResponse.asStateFlow()
+    private var _wardsList = MutableStateFlow(BillState.WardsData())
+    val wardsList = _wardsList.asStateFlow()
+
+    private var _viewBillResponse = MutableSharedFlow<BillState.ViewBill>()
+    val viewBillResponse = _viewBillResponse.asSharedFlow()
 
     private var _generateBillResponse = MutableSharedFlow<BillState.GenerateBillResponse>()
     val generateBillResponse = _generateBillResponse.asSharedFlow()
 
-    private var _collectBillResponse = MutableSharedFlow<BillState.GenerateBillResponse>()
+    private var _collectBillResponse = MutableSharedFlow<BillState.CollectBillResponse>()
     val collectBillResponse = _collectBillResponse.asSharedFlow()
 
     var finalList: List<Consumers?>? = null
 
+    var spinnerPosition = 0
+
     init {
-        generateBillList()
+        viewModelScope.launch {
+            getWards()
+        }
     }
 
-    private fun generateBillList() {
+    private suspend fun getWards() {
+        when (val response = repository.getWards()) {
+            is Resource.Success -> {
+
+                val gson = Gson()
+                val mapType = object : TypeToken<Map<String, String>>() {}.type
+                val wards: Map<String, String> =
+                    gson.fromJson(response.value.wards.toString(), mapType)
+
+                val wardsList = arrayListOf<Pair<String, String>>()
+                wardsList.add(Pair("0", "Select Ward"))
+                wards.forEach { (wardKey, wardNo) ->
+                    wardsList.add(Pair(wardKey, wardNo))
+                }
+                _wardsList.update {
+                    it.copy(data = wardsList, error = null)
+                }
+            }
+
+            is Resource.Failure -> {
+
+            }
+
+            else -> {}
+        }
+
+    }
+
+
+    private fun generateBillList(request: CansRequest) {
         viewModelScope.launch {
-            repository.getConsumersList().collectLatest { response ->
+            repository.getConsumersList(request).collectLatest { response ->
                 when (response) {
                     is Resource.Success -> {
                         _consumersList.update {
@@ -72,22 +111,31 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                     is Resource.Success -> {
                         response.value.apply {
                             if (error == 0) {
-                                _viewBillResponse.update {
-                                    it.copy(data = response.value.amounts, error = null)
-                                }
+                                _viewBillResponse.emit(
+                                    BillState.ViewBill(
+                                        data = response.value.amounts,
+                                        error = null
+                                    )
+                                )
                             } else {
-                                _viewBillResponse.update {
-                                    it.copy(data = null, error = response.value.message)
-                                }
+                                _viewBillResponse.emit(
+                                    BillState.ViewBill(
+                                        data = null,
+                                        error = response.value.message
+                                    )
+                                )
                             }
                         }
 
                     }
 
                     is Resource.Failure -> {
-                        _viewBillResponse.update {
-                            it.copy(data = null, error = response.errorBody.toString())
-                        }
+                        _viewBillResponse.emit(
+                            BillState.ViewBill(
+                                data = null,
+                                error = response.errorBody.toString()
+                            )
+                        )
                     }
 
                     else -> {}
@@ -122,9 +170,12 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                     }
 
                     is Resource.Failure -> {
-                        _viewBillResponse.update {
-                            it.copy(data = null, error = response.errorBody.toString())
-                        }
+                        _generateBillResponse.emit(
+                            BillState.GenerateBillResponse(
+                                data = null,
+                                error = response.errorBody.toString()
+                            )
+                        )
                     }
 
                     else -> {}
@@ -132,6 +183,7 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
             }
         }
     }
+
     private fun collectBill(request: CollectBillRequest) {
         viewModelScope.launch {
             repository.collectBill(request).collectLatest { response ->
@@ -139,15 +191,15 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                     is Resource.Success -> {
                         response.value.apply {
                             if (error == "0") {
-                                _generateBillResponse.emit(
-                                    BillState.GenerateBillResponse(
+                                _collectBillResponse.emit(
+                                    BillState.CollectBillResponse(
                                         data = response.value.receipt_no.toString(),
                                         error = null
                                     )
                                 )
                             } else {
-                                _generateBillResponse.emit(
-                                    BillState.GenerateBillResponse(
+                                _collectBillResponse.emit(
+                                    BillState.CollectBillResponse(
                                         data = null,
                                         error = response.value.message
                                     )
@@ -158,9 +210,12 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                     }
 
                     is Resource.Failure -> {
-                        _viewBillResponse.update {
-                            it.copy(data = null, error = response.errorBody.toString())
-                        }
+                        _collectBillResponse.emit(
+                            BillState.CollectBillResponse(
+                                data = null,
+                                error = response.errorBody.toString()
+                            )
+                        )
                     }
 
                     else -> {}
@@ -195,6 +250,14 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                 is BillActions.GenerateBill -> {
                     generateBill(action.request)
                 }
+
+                is BillActions.CollectBill -> {
+                    collectBill(action.request)
+                }
+
+                is BillActions.GetCansList -> {
+                    generateBillList(action.request)
+                }
             }
         }
 
@@ -205,6 +268,9 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
         data class SearchQuery(val query: String) : BillActions()
         data class ViewBill(val request: ViewBillRequest) : BillActions()
         data class GenerateBill(val request: GenerateBillRequest) : BillActions()
+        data class CollectBill(val request: CollectBillRequest) : BillActions()
+
+        data class GetCansList (val request :CansRequest): BillActions()
 
     }
 
@@ -213,5 +279,9 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
         data class ViewBill(val data: ViewBillResponse.Amounts? = null, val error: String? = null)
         data class GenerateBillResponse(val data: String? = null, val error: String? = null)
         data class CollectBillResponse(val data: String? = null, val error: String? = null)
+        data class WardsData(
+            val data: ArrayList<Pair<String, String>>? = null,
+            val error: String? = null
+        )
     }
 }

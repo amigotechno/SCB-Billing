@@ -1,5 +1,6 @@
 package com.scb.scbbillingandcollection.auth.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.scb.scbbillingandcollection.auth.data.models.LoginRequest
 import com.scb.scbbillingandcollection.auth.data.models.LoginResponse
@@ -7,15 +8,17 @@ import com.scb.scbbillingandcollection.auth.data.repository.AuthRepository
 import com.scb.scbbillingandcollection.core.base.ActionViewModel
 import com.scb.scbbillingandcollection.core.base.BaseAction
 import com.scb.scbbillingandcollection.core.retrofit.Resource
+import com.scb.scbbillingandcollection.generate_bill.data.models.WardsResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import javax.inject.Inject
+
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(private val repo: AuthRepository) :
@@ -25,6 +28,9 @@ class AuthViewModel @Inject constructor(private val repo: AuthRepository) :
 
     private val _loginResponse = MutableSharedFlow<AuthState.LoginData>()
     var loginResponse = _loginResponse.asSharedFlow()
+
+    private val _wardsResponse = MutableStateFlow(AuthState.WardsData())
+    var wardsResponse = _wardsResponse.asStateFlow()
 
     override suspend fun bindActions() {
         actions.collectLatest { action ->
@@ -79,6 +85,7 @@ class AuthViewModel @Inject constructor(private val repo: AuthRepository) :
     }
 
 
+
 }
 
 sealed class AuthActions : BaseAction {
@@ -88,5 +95,6 @@ sealed class AuthActions : BaseAction {
 sealed class AuthState {
     data class VersionData(val canUpgradable: Boolean = false)
     data class LoginData(val loginData: LoginResponse? = null, val error: String? = null)
+    data class WardsData(val loginData: WardsResponse? = null, val error: String? = null)
 }
 

@@ -1,5 +1,8 @@
 package com.scb.scbbillingandcollection.generate_bill.data.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class ViewBillResponse(
     val amounts: Amounts?,
     val error: Int?,
@@ -17,16 +20,21 @@ data class ViewBillResponse(
 
 
 data class ViewBillRequest(
-    val can_id: String
+    val can_id: String,
+    val reading: String,
+    val meter_status: String
 )
 
+@Parcelize
 data class GenerateBillRequest(
     val can_id: String,
+    val reading: String,
+    val meter_status: String,
     val current_month_demand: String,
     val rebate_amt: String,
     val arrear: String,
     val net_amount: String
-)
+):Parcelable
 
 data class GenerateBillResponse(
     val error:String?,

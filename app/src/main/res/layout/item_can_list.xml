@@ -45,10 +45,8 @@
             style="@style/text_primary_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableEnd="@android:drawable/stat_sys_phone_call"
-            android:drawablePadding="@dimen/_10sdp"
-            android:drawableTint="@color/colorPrimaryDark"
             android:gravity="center"
+            android:autoLink="phone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/scbNo"
             tools:text="612169014" />

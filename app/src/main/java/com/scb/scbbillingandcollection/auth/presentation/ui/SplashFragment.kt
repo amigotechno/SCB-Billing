@@ -30,8 +30,11 @@ class SplashFragment : Fragment() {
 
         Handler().postDelayed({
             if (appPreferences.isLoggedIn) {
+                findNavController().popBackStack()
                 findNavController().navigate(R.id.dashboardFragment)
+
             } else {
+                findNavController().popBackStack()
                 findNavController().navigate(R.id.loginFragment)
             }
         }, 2000)

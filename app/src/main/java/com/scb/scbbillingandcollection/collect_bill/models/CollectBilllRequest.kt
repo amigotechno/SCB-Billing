@@ -21,3 +21,6 @@ data class CollectBillResponse(
     val receipt_no :String?,
     val message:String?
 )
+data class CansRequest(
+    val ward : String
+)

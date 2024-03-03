@@ -1,5 +1,6 @@
 package com.scb.scbbillingandcollection.generate_bill.data.repository
 
+import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
 import com.scb.scbbillingandcollection.core.retrofit.ApiInterface
@@ -10,15 +11,16 @@ import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillReq
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillResponse
+import com.scb.scbbillingandcollection.generate_bill.data.models.WardsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: ApiInterface) : SafeApiCall,
     GenerateBillRepository {
-    override fun getConsumersList(): Flow<Resource<ConsumerListResponse>> = flow {
+    override fun getConsumersList(request: CansRequest): Flow<Resource<ConsumerListResponse>> = flow {
         val response = safeApiCall {
-            apiInterface.generateBillList()
+            apiInterface.generateBillList(request)
         }
         if (response is Resource.Success) {
             emit(response)
@@ -26,7 +28,14 @@ class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: A
             emit(response as Resource.Failure)
         }
     }
-
+    override suspend fun getWards(): Resource<WardsResponse> {
+        val response = safeApiCall {
+            apiInterface.getWards()
+        }
+        return if (response is Resource.Success) {
+            Resource.Success(response.value)
+        } else response
+    }
     override fun viewBill(request: ViewBillRequest): Flow<Resource<ViewBillResponse>> = flow{
         val response = safeApiCall {
             apiInterface.viewBill(request)

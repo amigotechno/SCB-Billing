@@ -9,6 +9,17 @@
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/_20sdp">
 
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/logo"
+            android:layout_centerInParent="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/logo"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"/>
+
         <TextView
             android:id="@+id/tvWelcome"
             android:layout_width="wrap_content"
@@ -19,12 +30,8 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintTop_toBottomOf="@id/logo" />
 
         <TextView
             android:id="@+id/tvContinue"
@@ -48,7 +55,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvContinue"
-            app:placeholderText="Mobile Number">
+            app:placeholderText="User Name">
 
             <EditText
                 android:id="@+id/username"

@@ -190,7 +190,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:autofillHints=""
-                        android:hint="Cheque Bank"
+                        android:hint="Cheque Branch"
                         android:textColor="@color/colorPrimary"
                         android:textColorHint="@color/colorPrimary" />
 
