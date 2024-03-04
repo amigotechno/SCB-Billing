@@ -33,6 +33,9 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
     private var _wardsList = MutableStateFlow(BillState.WardsData())
     val wardsList = _wardsList.asStateFlow()
 
+    private var _beatsList = MutableStateFlow(BillState.BeatsData())
+    val beatsList = _beatsList.asStateFlow()
+
     private var _viewBillResponse = MutableSharedFlow<BillState.ViewBill>()
     val viewBillResponse = _viewBillResponse.asSharedFlow()
 
@@ -45,6 +48,7 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
     var finalList: List<Consumers?>? = null
 
     var spinnerPosition = 0
+    var beatPosition = 0
 
     init {
         viewModelScope.launch {
@@ -62,11 +66,39 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                     gson.fromJson(response.value.wards.toString(), mapType)
 
                 val wardsList = arrayListOf<Pair<String, String>>()
-                wardsList.add(Pair("0", "Select Ward"))
+                wardsList.add(Pair("0", "Ward"))
                 wards.forEach { (wardKey, wardNo) ->
                     wardsList.add(Pair(wardKey, wardNo))
                 }
                 _wardsList.update {
+                    it.copy(data = wardsList, error = null)
+                }
+            }
+
+            is Resource.Failure -> {
+
+            }
+
+            else -> {}
+        }
+
+    }
+
+    private suspend fun getBeats(wardNo:String) {
+        when (val response = repository.getBeatCodes(wardNo)) {
+            is Resource.Success -> {
+
+                val gson = Gson()
+                val mapType = object : TypeToken<Map<String, String>>() {}.type
+                val wards: Map<String, String> =
+                    gson.fromJson(response.value.beat_codes.toString(), mapType)
+
+                val wardsList = arrayListOf<Pair<String, String>>()
+                wardsList.add(Pair("0", "Beat Code"))
+                wards.forEach { (wardKey, wardNo) ->
+                    wardsList.add(Pair(wardKey, wardNo))
+                }
+                _beatsList.update {
                     it.copy(data = wardsList, error = null)
                 }
             }
@@ -258,6 +290,9 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                 is BillActions.GetCansList -> {
                     generateBillList(action.request)
                 }
+                is BillActions.GetBeatsList -> {
+                    getBeats(action.wardNo)
+                }
             }
         }
 
@@ -271,6 +306,7 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
         data class CollectBill(val request: CollectBillRequest) : BillActions()
 
         data class GetCansList (val request :CansRequest): BillActions()
+        data class GetBeatsList (val wardNo:String): BillActions()
 
     }
 
@@ -280,6 +316,10 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
         data class GenerateBillResponse(val data: String? = null, val error: String? = null)
         data class CollectBillResponse(val data: String? = null, val error: String? = null)
         data class WardsData(
+            val data: ArrayList<Pair<String, String>>? = null,
+            val error: String? = null
+        )
+        data class BeatsData(
             val data: ArrayList<Pair<String, String>>? = null,
             val error: String? = null
         )

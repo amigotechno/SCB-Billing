@@ -13,13 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <LinearLayout
             android:id="@+id/wardLabel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
-            android:layout_weight="0.8"
+            android:layout_weight="1"
             android:background="@drawable/dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,12 +34,33 @@
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/beatLabel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:background="@drawable/dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/beatNo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:backgroundTint="@color/colorPrimary"
+                android:overlapAnchor="false"
+                android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/serachBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_weight="1.2"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_weight="1"
             android:text="Search" />
 
 
@@ -47,6 +68,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchView"
+        android:visibility="invisible"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="-8dp"
-            android:hint="Search Can"
+            android:hint="Search UCN"
             android:singleLine="true"
             android:textColorHint="@color/black" />
 

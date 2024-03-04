@@ -51,8 +51,10 @@ class GenerateCanListFragment : Fragment() {
     lateinit var dialog: AlertDialog
 
     var selectedItem : Pair<String, String>? = null
+    var selectedBeat : Pair<String, String>? = null
 
     var wardsList = ArrayList<Pair<String, String>>()
+    var beatsList = ArrayList<Pair<String, String>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +72,7 @@ class GenerateCanListFragment : Fragment() {
 
         binding.serachBtn.clickWithDebounce {
             if (selectedItem != null && selectedItem?.first != "0"){
-                val request  = CansRequest(selectedItem?.first?:"")
+                val request  = CansRequest(selectedItem?.first?:"",selectedBeat?.first?:"")
                 dialog.showCompact()
                 billViewModel.dispatch(GenerateBillViewModel.BillActions.GetCansList(request))
             }else{
@@ -84,6 +86,24 @@ class GenerateCanListFragment : Fragment() {
             ) {
                 selectedItem = wardsList[position]
                 billViewModel.spinnerPosition = position
+                billViewModel.beatPosition = 0
+                selectedBeat = null
+                dialog.showCompact()
+                billViewModel.dispatch(GenerateBillViewModel.BillActions.GetBeatsList(selectedItem?.second.toString()))
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Another interface callback
+            }
+        }
+
+        binding.beatNo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>, view: View?, position: Int, id: Long
+            ) {
+                dialog.dismissCompact()
+                selectedBeat = beatsList[position]
+                billViewModel.beatPosition = position
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -100,6 +120,7 @@ class GenerateCanListFragment : Fragment() {
                 if (it.isEmpty()){
                     showCustomToast(title = "No Data Found")
                 }
+                binding.searchView.isVisible = true
                 adapter.submitList(it)
                 dialog.dismissCompact()
             }
@@ -123,9 +144,29 @@ class GenerateCanListFragment : Fragment() {
                 val adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, finalList)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.wardNo.adapter = adapter
+//                binding.wardNo.setSelection(billViewModel.spinnerPosition)
+            }
+            it.error?.let {
+                showCustomToast(R.drawable.ic_error_warning, title = it)
+            }
+        }
 
-                binding.wardNo.setSelection(billViewModel.spinnerPosition)
+        observerState(billViewModel.beatsList){
+            it.data?.let {
+                if (it.isEmpty()){
+                    showCustomToast(title = "No Beats Found")
+                }
+                beatsList = it
+                val finalList = arrayListOf<String>()
 
+                for (i in it){
+                    finalList.add(i.second)
+                }
+
+                val adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, finalList)
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.beatNo.adapter = adapter
+//                binding.beatNo.setSelection(billViewModel.beatPosition)
             }
             it.error?.let {
                 showCustomToast(R.drawable.ic_error_warning, title = it)

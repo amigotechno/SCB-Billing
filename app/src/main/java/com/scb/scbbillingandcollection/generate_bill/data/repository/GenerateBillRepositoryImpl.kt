@@ -6,6 +6,7 @@ import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
 import com.scb.scbbillingandcollection.core.retrofit.ApiInterface
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.core.retrofit.SafeApiCall
+import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ConsumerListResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
@@ -31,6 +32,14 @@ class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: A
     override suspend fun getWards(): Resource<WardsResponse> {
         val response = safeApiCall {
             apiInterface.getWards()
+        }
+        return if (response is Resource.Success) {
+            Resource.Success(response.value)
+        } else response
+    }
+    override suspend fun getBeatCodes(wardNo:String): Resource<BeatsResponse> {
+        val response = safeApiCall {
+            apiInterface.getBeatCodes(wardNo)
         }
         return if (response is Resource.Success) {
             Resource.Success(response.value)

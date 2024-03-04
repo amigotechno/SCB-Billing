@@ -40,7 +40,7 @@ class GenerateBillFragment : Fragment() {
             demandText.text = args.request.current_month_demand.toString()
             serviceChargesText.text = args.charges.toString()
             arrearsText.text = args.request.arrear.toString()
-            klLabelText.text = args.request.rebate_amt.toString()
+//            klLabelText.text = args.request.rebate_amt.toString()
             netText.text = args.request.net_amount.toString()
             generateBill.isEnabled = true
         }

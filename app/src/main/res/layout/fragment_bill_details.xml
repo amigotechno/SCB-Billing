@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Meter No"
+        android:text="UCN No"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sdp"
         app:layout_constraintEnd_toStartOf="@id/meterNoText"

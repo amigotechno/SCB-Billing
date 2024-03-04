@@ -22,5 +22,6 @@ data class CollectBillResponse(
     val message:String?
 )
 data class CansRequest(
-    val ward : String
+    val ward : String,
+    val beat_code : String? = ""
 )

@@ -7,6 +7,7 @@ import com.scb.scbbillingandcollection.auth.data.models.VersionResponse
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
+import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillRequest
@@ -24,6 +25,9 @@ interface ApiInterface {
 
    @GET("getMasterWards.json")
     suspend fun getWards(): WardsResponse
+
+   @GET("getMasterBeatCodes.json")
+    suspend fun getBeatCodes(@Query("ward") ward:String): BeatsResponse
 
     @POST("userLogin.json")
     suspend fun checkLogin(@Body request: LoginRequest): LoginResponse
