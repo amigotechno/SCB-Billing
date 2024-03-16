@@ -1,7 +1,20 @@
 package com.scb.scbbillingandcollection.collect_bill
 
 import android.app.DatePickerDialog
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
+import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
+import android.os.IBinder
+import android.os.Message
+import android.os.Messenger
+import android.os.RemoteException
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +22,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -18,12 +32,17 @@ import androidx.navigation.navGraphViewModels
 import com.scb.scbbillingandcollection.R
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.core.extensions.clickWithDebounce
+import com.scb.scbbillingandcollection.core.extensions.millisToDate
 import com.scb.scbbillingandcollection.core.extensions.observerSharedFlow
 import com.scb.scbbillingandcollection.core.extensions.showCustomToast
 import com.scb.scbbillingandcollection.databinding.FragmentCollectTypeBinding
 import com.scb.scbbillingandcollection.generate_bill.presentation.viewmodel.GenerateBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 import java.util.Calendar
+
 
 @AndroidEntryPoint
 class CollectTypeFragment : Fragment() {
@@ -111,6 +130,7 @@ class CollectTypeFragment : Fragment() {
         observerSharedFlow(billViewModel.collectBillResponse) {
             it.data?.let {
                 showCustomToast(title = it)
+                setData()
                 findNavController().navigate(CollectTypeFragmentDirections.actionCollectTypeFragmentToGenerateCanListFragment(false))
             }
             it.error?.let {
@@ -202,5 +222,109 @@ class CollectTypeFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun setData() {
+        val intent = Intent()
+        intent.setAction("com.pinelabs.masterapp.SERVER")
+        intent.setPackage("com.pinelabs.masterapp")
+        requireActivity().bindService(intent, printConnection, AppCompatActivity.BIND_AUTO_CREATE)
+    }
+
+
+    private val printConnection: ServiceConnection = object : ServiceConnection {
+        var mServerMessenger: Messenger? = null
+        var isBound = false
+
+        //
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            mServerMessenger = Messenger(service)
+            isBound = true
+            val message: Message = Message.obtain(null, 1001)
+            val data = Bundle()
+            val finalObject = JSONObject()
+            val headerObject = JSONObject()
+            val detailObject = JSONObject()
+            try {
+                headerObject.put("ApplicationId", "c375e49b009d4ecabbef7c7898ca9664")
+                headerObject.put("UserId", "1001609")
+                headerObject.put("MethodId", "1002")
+                headerObject.put("VersionNo", "1.0")
+                detailObject.put("PrintRefNo", "123446779")
+                detailObject.put("SavePrintData", true)
+                val arryData = JSONArray()
+                val printData = JSONObject()
+                printData.put("PrintDataType", 0)
+                printData.put("PrinterWidth", 24)
+
+                val billText = StringBuilder()
+
+                val nextLine = "\n"
+                billText.append("Secunderabad Containment")
+                billText.append(nextLine)
+                billText.append("Bheema Residency")
+                billText.append(nextLine)
+                val billEntries =
+                    arrayOf(arrayOf("Date", millisToDate(System.currentTimeMillis())),
+                        arrayOf("Receipt No", "123456"),
+                        arrayOf("Cashier", "Sridhar"),
+                        arrayOf("Total Amount", args.customerResponse.payable_amount),
+                        arrayOf("Paid Amount", binding.amount.text.toString()),
+                        arrayOf("Balance Amount", binding.balanceAmount.text.toString(), arrayOf("Payment Mode", selectedItem)))
+
+                for (entry in billEntries) {
+                    billText.append(String.format("%-10s%10s\n", entry[0], entry[1]))
+                }
+                billText.append(nextLine)
+                billText.append("--------------------")
+                billText.append(nextLine)
+                billText.append("--------------------")
+                billText.append(nextLine)
+                billText.append(nextLine)
+
+                printData.put("DataToPrint",billText)
+                printData.put("IsCenterAligned", false)
+                printData.put("ImagePath", android.R.attr.path)
+                printData.put("ImageData", "")
+                arryData.put(printData)
+                detailObject.put("Data", arryData)
+                finalObject.put("Header", headerObject)
+                finalObject.put("Detail", detailObject)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            data.putString("MASTERAPPREQUEST", finalObject.toString())
+            message.data = data
+            try {
+                message.replyTo = Messenger(IncomingHandler())
+                mServerMessenger!!.send(message)
+            } catch (e: RemoteException) {
+                e.printStackTrace()
+            }
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            mServerMessenger = null
+            isBound = false
+        }
+    }
+
+
+    private class IncomingHandler : Handler() {
+        override fun handleMessage(msg: Message) {
+            val bundle: Bundle = msg.getData()
+            val value =
+                bundle.getString("MASTERAPPRESPONSE") // process the response Json as required.
+            Log.e("Tagresponse", value!!)
+            bundle.clear()
+            try {
+                val `object` = JSONObject(value)
+                val response = `object`.getString("Response")
+                Log.e("JSON respons", "status-- $response")
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            Log.e("Tagresponse", value!!)
+        }
     }
 }

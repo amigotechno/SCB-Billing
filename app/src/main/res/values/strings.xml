@@ -1,6 +1,56 @@
 <resources>
     <string name="app_name">SCB Billing and Collection</string>
+    <string name="water_bill">
+        Secunderabad Containment\n
+        Water Bill\n
+        \n
+        Bill Date: [Bill]\n
+        Due Date: [Due]\n
+        Receipt Number: [Receipt]\n
+        USN Number: [USN]\n
+        Name: [Name]\n
+        Address: [Address]\n
+        \n
+        Bill Details:\n
+        ---------------------\n
+        Previous Reading: [Previous]\n
+        Present Reading: [Present]\n
+        Usage Units: [Units]\n
+        \n
+        Demand Amount: [Demand]\n
+        Arrears Amount: [Arrears]\n
+        Service Charge: [Service]\n
+        Total Amount: [Total]\n
+        \n
+        HelpLine Number\n 180001290345\n\n
+        ---------------------\n
+    </string>
 
+    <string name="collect_bill">
+        SecunderabadContainmentBoardjwksklks \n
+        Collect Bill\n
+        \n
+        Bill Date: [Bill]\n
+        Due Date: [Due]\n
+        Receipt Number: [Receipt]\n
+        USN Number: [USN]\n
+        Name: [Name]\n
+        Address: [Address]\n
+        \n
+        Bill Details:\n
+        ---------------------\n
+        Previous Reading: [Previous]\n
+        Present Reading: [Present]\n
+        Usage Units: [Units]\n
+        \n
+        Demand Amount: [Demand]\n
+        Arrears Amount: [Arrears]\n
+        Service Charge: [Service]\n
+        Total Amount: [Total]\n
+        \n
+        HelpLine Number\n 180001290345\n\n
+        ---------------------\n
+    </string>
     <string name="login">Login</string>
     <string name="enter_pin_text">Enter Password</string>
     <string name="enter_mobile_number_text">Enter Username</string>
@@ -23,4 +73,5 @@
         <item>Repair</item>
         <item>Un Metered</item>
     </string-array>
+
 </resources>
