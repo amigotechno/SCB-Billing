@@ -30,10 +30,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.birjuvachhani.locus.Locus
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.scb.scbbillingandcollection.R
 import com.scb.scbbillingandcollection.core.extensions.clickWithDebounce
+import com.scb.scbbillingandcollection.core.extensions.configureLocus
 import com.scb.scbbillingandcollection.core.extensions.millisToDate
 import com.scb.scbbillingandcollection.core.extensions.millisToTime
 import com.scb.scbbillingandcollection.core.extensions.observerSharedFlow
@@ -56,11 +58,6 @@ import java.util.Date
 class GenerateBillFragment : Fragment() {
     var currentPhotoPath: String = ""
     private var _binding: FragmentGenerateBillBinding? = null
-    private val ANDROID10_ALL_PERMISSIONS = arrayOf(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.CAMERA
-    )
     private val ALL_PERMISSIONS = arrayOf(
         Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION
     )
@@ -76,6 +73,8 @@ class GenerateBillFragment : Fragment() {
 
     var receiptNo = "123423"
     val CAMERA_REQUEST_CODE = 102
+    var latitude = "0.0"
+    var longitude = "0.0"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -108,7 +107,9 @@ class GenerateBillFragment : Fragment() {
                     args.request.rebate_amt,
                     args.request.arrear,
                     args.request.net_amount,
-                    photo_Encoded
+                    photo_Encoded,
+                    latitude, longitude
+
                 )
                 billViewModel.dispatch(GenerateBillViewModel.BillActions.GenerateBill(request))
 
@@ -162,8 +163,25 @@ class GenerateBillFragment : Fragment() {
 //                }
 //            }
         }
+        getLocation()
 
         return binding.root
+    }
+
+    fun getLocation() {
+        Locus.configureLocus(
+            requireBackgroundUpdate = true, forceRequireBackgroundUpdate = true
+        ).getCurrentLocation(requireContext()) { result ->
+            result.location?.let { location ->
+                latitude = location.latitude.toString()
+                longitude = location.longitude.toString()
+
+                Log.d("Latitude", "getLocationForPunch: " + location.latitude)
+            }
+            result.error?.let {
+                getLocation()
+            }
+        }
     }
 
     private fun getDrawableAsBytes(context: Context, drawableId: Int): ByteArray {
@@ -265,6 +283,7 @@ class GenerateBillFragment : Fragment() {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
             }
+            getLocation()
         }
 
     }

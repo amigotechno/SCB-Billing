@@ -34,7 +34,9 @@ data class GenerateBillRequest(
     val rebate_amt: String,
     val arrear: String,
     val net_amount: String,
-    val image: String
+    val image: String,
+    val latitude: String?="0.0",
+    val longitude: String?="0.0"
 ):Parcelable
 
 data class GenerateBillResponse(
