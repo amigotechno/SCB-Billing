@@ -103,12 +103,89 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="888992"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_14sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/meterLabel"
         app:layout_constraintTop_toBottomOf="@id/billDetails" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/nameLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="Name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintEnd_toStartOf="@id/meterNoText"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/meterLabel" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/nameText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/meterLabel"
+        app:layout_constraintTop_toBottomOf="@id/meterLabel"/>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/plotNo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="Plot No "
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintEnd_toStartOf="@id/meterNoText"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameLabel" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/plotText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/nameLabel"
+        app:layout_constraintTop_toBottomOf="@id/nameLabel" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/addressLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="Location "
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintEnd_toStartOf="@id/nameText"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/plotNo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/addressText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:maxLines="3"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/plotNo"
+        app:layout_constraintTop_toBottomOf="@id/plotNo" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/pipeSizeLabel"
@@ -119,22 +196,21 @@
         android:text="Pipe Size "
         android:textColor="@color/black"
         android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/meterNoText"
+        app:layout_constraintEnd_toStartOf="@id/addressText"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/meterLabel" />
+        app:layout_constraintTop_toBottomOf="@id/addressText" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/pipeSizeTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="25"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_14sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/meterLabel"
-        app:layout_constraintTop_toBottomOf="@id/meterLabel" />
+        app:layout_constraintStart_toEndOf="@id/addressLabel"
+        app:layout_constraintTop_toBottomOf="@id/addressText" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/categoryLabel"
@@ -155,66 +231,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Dd"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_14sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/categoryLabel"
         app:layout_constraintTop_toBottomOf="@id/pipeSizeLabel" />
-
-<!--    <com.google.android.material.textview.MaterialTextView-->
-<!--        android:id="@+id/fwsLabel"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="@dimen/_10sdp"-->
-<!--        android:layout_marginTop="@dimen/_10sdp"-->
-<!--        android:text="Is FWS "-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textSize="@dimen/_14sdp"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/meterNoText"-->
-<!--        app:layout_constraintHorizontal_chainStyle="spread"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />-->
-
-<!--    <com.google.android.material.textview.MaterialTextView-->
-<!--        android:id="@+id/fwsText"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/_10sdp"-->
-<!--        android:text="True"-->
-<!--        android:textColor="@color/colorPrimary"-->
-<!--        android:textSize="@dimen/_14sdp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toEndOf="@id/categoryLabel"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />-->
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/addressLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Address "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/meterNoText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/addressText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Hyderabad"
-        android:maxLines="3"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/categoryLabel"
-        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
-
 
     <LinearLayout
         android:id="@+id/meterStatusLabel"
@@ -225,7 +246,7 @@
         android:background="@drawable/dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressLabel">
+        app:layout_constraintTop_toBottomOf="@id/categoryLabel">
 
         <Spinner
             android:id="@+id/meterStatus"
@@ -258,7 +279,7 @@
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>z
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/viewBill"

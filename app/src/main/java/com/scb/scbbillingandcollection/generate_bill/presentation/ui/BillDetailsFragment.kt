@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.blankj.utilcode.util.KeyboardUtils
 import com.scb.scbbillingandcollection.R
 import com.scb.scbbillingandcollection.core.extensions.clickWithDebounce
 import com.scb.scbbillingandcollection.core.extensions.observerSharedFlow
@@ -47,6 +48,8 @@ class BillDetailsFragment : Fragment() {
         binding.apply {
             categoryText.text = args.customerResponse.category
             meterNoText.text = args.customerResponse.can_number
+            nameText.text = args.customerResponse.consumer_name
+            plotText.text = args.customerResponse.plot_no
             pipeSizeTxt.text = args.customerResponse.pipe_size
             addressText.text = args.customerResponse.location
         }
@@ -56,6 +59,11 @@ class BillDetailsFragment : Fragment() {
                 parent: AdapterView<*>, view: View?, position: Int, id: Long
             ) {
                 selectedItem = parent.getItemAtPosition(position).toString()
+                if (selectedItem.equals("Metered")) {
+                    binding.presentReadingLayout.visibility = View.VISIBLE
+                } else {
+                    binding.presentReadingLayout.visibility = View.GONE
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -64,9 +72,10 @@ class BillDetailsFragment : Fragment() {
         }
 
         binding.viewBill.clickWithDebounce {
+            KeyboardUtils.hideSoftInput(requireActivity())
             if (selectedItem == "") {
                 showCustomToast(title = "Select Meter Status")
-            } else if (binding.presentReading.text.isEmpty()) {
+            } else if (selectedItem.equals("Metered")&&binding.presentReading.text.isEmpty()) {
                 showCustomToast(title = "Enter Reading")
             } else {
                 billViewModel.dispatch(
@@ -95,11 +104,12 @@ class BillDetailsFragment : Fragment() {
                     it.rebate_amt.toString(),
                     it.arrear.toString(),
                     it.net_amount.toString(),
+                    ""
                 )
                 findNavController().navigate(
                     BillDetailsFragmentDirections.actionBillDetailsFragmentToGenerateBillFragment(
                         request,
-                        it.service_charges.toString()
+                        it.service_charges.toString(),args.customerResponse
                     )
                 )
             }

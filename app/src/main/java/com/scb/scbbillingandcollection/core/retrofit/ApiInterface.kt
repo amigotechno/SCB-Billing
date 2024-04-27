@@ -7,9 +7,11 @@ import com.scb.scbbillingandcollection.auth.data.models.VersionResponse
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
+import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
+import com.scb.scbbillingandcollection.generate_bill.data.models.UCNDetails
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.WardsResponse
@@ -43,5 +45,9 @@ interface ApiInterface {
 
     @POST("collectBill.json")
     suspend fun collectBill(@Body request: CollectBillRequest): CollectBillResponse
+
+    @POST("getByUCN.json")
+    suspend fun getUcnInfo(@Body request: GetCan): UCNDetails
+
 
 }

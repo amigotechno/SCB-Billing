@@ -27,6 +27,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_14sdp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/demandLabel"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,6 +53,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_14sdp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/demandLabel"
         app:layout_constraintTop_toBottomOf="@id/demandLabel" />
@@ -78,35 +80,36 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_14sdp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/serviceChargesLabel"
         app:layout_constraintTop_toBottomOf="@id/serviceChargesLabel" />
 
-  <!--  <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/klLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="20KL F.W.S Amount "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/demandText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
+    <!--  <com.google.android.material.textview.MaterialTextView
+          android:id="@+id/klLabel"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/_10sdp"
+          android:layout_marginTop="@dimen/_10sdp"
+          android:text="20KL F.W.S Amount "
+          android:textColor="@color/black"
+          android:textSize="@dimen/_14sdp"
+          app:layout_constraintEnd_toStartOf="@id/demandText"
+          app:layout_constraintHorizontal_chainStyle="spread"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/klLabelText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/arrearsLabel"
-        app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
--->
+      <com.google.android.material.textview.MaterialTextView
+          android:id="@+id/klLabelText"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/_10sdp"
+          android:textColor="@color/colorPrimary"
+          android:textSize="@dimen/_14sdp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@id/arrearsLabel"
+          app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
+  -->
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/netLabel"
         android:layout_width="0dp"
@@ -128,10 +131,21 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_14sdp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/netLabel"
         app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/meterImage"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/netText"
+        app:srcCompat="@drawable/capture_photo" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancel"
@@ -144,17 +158,17 @@
         app:layout_constraintEnd_toStartOf="@id/generateBill"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/netText" />
+        app:layout_constraintTop_toBottomOf="@id/meterImage" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/generateBill"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
-        android:text="Generate Bill"
         android:enabled="false"
+        android:text="Generate Bill"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cancel"
-        app:layout_constraintTop_toBottomOf="@id/netText" />
+        app:layout_constraintTop_toBottomOf="@id/meterImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

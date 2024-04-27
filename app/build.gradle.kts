@@ -74,6 +74,9 @@ dependencies {
     //Location library
     implementation ("com.github.BirjuVachhani:locus-android:4.1.2")
 
+    //Utils
+    implementation ("com.blankj:utilcodex:1.30.5")
+
     //AppPreferences
     implementation ("androidx.security:security-crypto:1.1.0-alpha06")
 

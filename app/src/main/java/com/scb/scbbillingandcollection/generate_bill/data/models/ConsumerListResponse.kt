@@ -24,5 +24,6 @@ data class Consumers(
     val net_demand: String?,
     val payable_amount: String?,
     val last_billed_date: String?,
+    val plot_no: String?,
 ):Parcelable
 

@@ -3,6 +3,7 @@ package com.scb.scbbillingandcollection.generate_bill.data.repository
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
+import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.core.retrofit.ApiInterface
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.core.retrofit.SafeApiCall
@@ -10,6 +11,7 @@ import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ConsumerListResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
+import com.scb.scbbillingandcollection.generate_bill.data.models.UCNDetails
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.WardsResponse
@@ -67,7 +69,7 @@ class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: A
         }
     }
 
-    override fun collectBill(request: CollectBillRequest): Flow<Resource<CollectBillResponse>> = flow{
+    override fun collectBill(request: CollectBillRequest): Flow<Resource<CollectBillResponse>> = flow {
         val response = safeApiCall {
             apiInterface.collectBill(request)
         }
@@ -76,5 +78,14 @@ class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: A
         } else {
             emit(response as Resource.Failure)
         }
+    }
+
+    override suspend fun searchUCN(request: GetCan): Resource<UCNDetails> {
+        val response = safeApiCall {
+            apiInterface.getUcnInfo(request)
+        }
+        return if (response is Resource.Success) {
+            Resource.Success(response.value)
+        } else response
     }
 }

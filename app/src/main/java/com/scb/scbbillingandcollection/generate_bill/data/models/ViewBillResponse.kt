@@ -33,7 +33,8 @@ data class GenerateBillRequest(
     val current_month_demand: String,
     val rebate_amt: String,
     val arrear: String,
-    val net_amount: String
+    val net_amount: String,
+    val image: String
 ):Parcelable
 
 data class GenerateBillResponse(

@@ -37,6 +37,9 @@ class AppPreferences @Inject constructor(
         get() = preferences.getString(NAME, "") ?: ""
         set(value) = preferences.edit().putString(NAME, value).apply()
 
+    fun clearPreferencesData() {
+        preferences.edit().clear().apply()
+    }
 }
 
 

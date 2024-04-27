@@ -22,6 +22,11 @@
         <action
             android:id="@+id/action_dashboardFragment_to_generateCanListFragment"
             app:destination="@id/generateCanListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_loginFragment"
+            app:popUpTo="@id/main_nav_graph"
+            app:popUpToInclusive="true"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/generateCanListFragment"
@@ -53,11 +58,18 @@
         <argument
             android:name="charges"
             app:argType="string" />
+        <argument
+            android:name="customerResponse"
+            app:argType="com.scb.scbbillingandcollection.generate_bill.data.models.Consumers" />
+
         <action
             app:popUpTo="@+id/generateCanListFragment"
             app:popUpToInclusive="true"
             android:id="@+id/action_generateFragment_to_generateCanListFragment"
             app:destination="@id/generateCanListFragment" />
+        <action
+            android:id="@+id/action_generateFragment_to_collectBillDetails"
+            app:destination="@id/collectBillDetailsFragment" />
 
     </fragment>
     <fragment
@@ -85,6 +97,9 @@
             app:popUpToInclusive="true"
             android:id="@+id/action_collectTypeFragment_to_generateCanListFragment"
             app:destination="@id/generateCanListFragment" />
+        <action
+            android:id="@+id/action_collectTypeFragment_to_qrWebFragment"
+            app:destination="@id/qrWebFragment" />
 
 
     </fragment>
@@ -100,6 +115,18 @@
             android:name="customerResponse"
             app:argType="com.scb.scbbillingandcollection.generate_bill.data.models.Consumers" />
     </fragment>
+
+    <fragment
+        android:id="@+id/qrWebFragment"
+        android:name="com.scb.scbbillingandcollection.collect_bill.QRWebViewFragment"
+        android:label="Qr Payment"
+        tools:layout="@layout/fragment_q_r_web_view" >
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+
+
 
 
 </navigation>

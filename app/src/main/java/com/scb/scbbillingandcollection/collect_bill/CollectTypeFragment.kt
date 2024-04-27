@@ -2,18 +2,15 @@ package com.scb.scbbillingandcollection.collect_bill
 
 import android.app.DatePickerDialog
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.graphics.Typeface
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
-import android.os.RemoteException
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,10 +26,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.google.gson.Gson
 import com.scb.scbbillingandcollection.R
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
+import com.scb.scbbillingandcollection.core.base.AppPreferences
 import com.scb.scbbillingandcollection.core.extensions.clickWithDebounce
 import com.scb.scbbillingandcollection.core.extensions.millisToDate
+import com.scb.scbbillingandcollection.core.extensions.millisToTime
 import com.scb.scbbillingandcollection.core.extensions.observerSharedFlow
 import com.scb.scbbillingandcollection.core.extensions.showCustomToast
 import com.scb.scbbillingandcollection.databinding.FragmentCollectTypeBinding
@@ -41,7 +41,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.util.Calendar
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -52,8 +55,66 @@ class CollectTypeFragment : Fragment() {
     private val billViewModel: GenerateBillViewModel by navGraphViewModels(R.id.main_nav_graph) { defaultViewModelProviderFactory }
 
     private var selectedItem = ""
+    private var receiptNumber = ""
 
     private val args: CollectTypeFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var appPreferences: AppPreferences
+
+    lateinit var hexString: StringBuilder
+
+    var isCard = false
+
+
+    inner class IncomingHandler : Handler() {
+        override fun handleMessage(msg: Message) {
+            val bundle: Bundle = msg.data
+            val value =
+                bundle.getString("MASTERAPPRESPONSE") // process the response Json as required.
+            Log.e("Tagresponse", value!!)
+            bundle.clear()
+            try {
+                val `object` = JSONObject(value)
+                val response = `object`.getString("Response")
+                val header = `object`.getString("Header")
+                Log.e("JSON respons", "status-- $response")
+                findNavController().navigate(
+                    CollectTypeFragmentDirections.actionCollectTypeFragmentToGenerateCanListFragment(
+                        false
+                    )
+                )
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            Log.e("Tagresponse", value)
+        }
+    }
+
+    inner class PaymentHandler : Handler() {
+        override fun handleMessage(msg: Message) {
+            val bundle: Bundle = msg.data
+            val value =
+                bundle.getString("MASTERAPPRESPONSE") // process the response Json as required.
+            Log.e("Tagresponse", value!!)
+            bundle.clear()
+            try {
+                val `object` = JSONObject(value)
+                val response = `object`.getString("Response")
+                val header = `object`.getString("Header")
+                Log.e("JSON respons", "status-- $response")
+                val obj = JSONObject(response)
+
+                if (obj.getString("ResponseMsg").equals("APPROVED")) {
+                    doApiCall()
+                }
+                showCustomToast(title = obj.getString("ResponseMsg").toString())
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            Log.e("Tagresponse", value)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -75,21 +136,33 @@ class CollectTypeFragment : Fragment() {
             ) {
                 selectedItem = parent.getItemAtPosition(position).toString()
                 when (selectedItem) {
-
                     "Cash" -> {
+                        isCard = false
                         binding.details.isVisible = false
                     }
 
                     "Cheque" -> {
+                        isCard = false
                         binding.details.isVisible = true
                         binding.chequeDetails.isVisible = true
                         binding.ddDetails.isVisible = false
                     }
 
                     "DD" -> {
+                        isCard = false
                         binding.details.isVisible = true
                         binding.chequeDetails.isVisible = false
                         binding.ddDetails.isVisible = true
+                    }
+
+                    "Card" -> {
+                        isCard = true
+                        binding.details.isVisible = false
+                    }
+
+                    "QR" -> {
+                        isCard = false
+                        binding.details.isVisible = false
                     }
 
                 }
@@ -120,18 +193,43 @@ class CollectTypeFragment : Fragment() {
         }
 
         binding.collectBtn.clickWithDebounce {
-            validations()
+            if (selectedItem == "Card") {
+                getPayment()
+            } else {
+                validations()
+            }
         }
 
+
+        // Load the drawable image as a byte array
+        val imageBytes = getDrawableAsBytes(requireContext(), R.drawable.logo)
+
+        // Convert the byte array to hexadecimal format
+        hexString = StringBuilder()
+        imageBytes.forEach {
+            hexString.append(String.format("%02X", it))
+        }
+
+
         return binding.root
+    }
+
+    private fun doApiCall() {
+        val request = CollectBillRequest(
+            can_id = args.customerResponse.id.toString(),
+            collect_type = selectedItem,
+            amount = binding.amount.text.toString()
+        )
+        billViewModel.dispatch(GenerateBillViewModel.BillActions.CollectBill(request))
+
     }
 
     private fun initObservers() {
         observerSharedFlow(billViewModel.collectBillResponse) {
             it.data?.let {
+                receiptNumber = it
                 showCustomToast(title = it)
                 setData()
-                findNavController().navigate(CollectTypeFragmentDirections.actionCollectTypeFragmentToGenerateCanListFragment(false))
             }
             it.error?.let {
                 showCustomToast(title = it)
@@ -164,8 +262,8 @@ class CollectTypeFragment : Fragment() {
         binding.apply {
             if (selectedItem == "") {
                 showCustomToast(title = "Select Type of Mode")
-            } else if (amount.text.isEmpty()) {
-                showCustomToast(title = "Enter Amount")
+            } else if (amount.text.isEmpty() || amount.text.toString() == "0") {
+                showCustomToast(title = "Enter Valid Amount")
             } else if (selectedItem == "Cheque") {
                 if (chequeNo.text.isEmpty()) {
                     showCustomToast(title = "Enter Cheque Number")
@@ -177,8 +275,8 @@ class CollectTypeFragment : Fragment() {
                     showCustomToast(title = "Enter Cheque Branch")
                 } else {
                     //do api call
-                   val request =  CollectBillRequest(
-                        can_id = args.customerResponse.id.toString()?:"",
+                    val request = CollectBillRequest(
+                        can_id = args.customerResponse.id.toString(),
                         collect_type = selectedItem,
                         amount = amount.text.toString(),
                         cheque_no = chequeNo.text.toString(),
@@ -200,8 +298,8 @@ class CollectTypeFragment : Fragment() {
                     showCustomToast(title = "Enter DD Branch")
                 } else {
                     //do api call
-                   val request = CollectBillRequest(
-                        can_id = args.customerResponse.id.toString()?:"",
+                    val request = CollectBillRequest(
+                        can_id = args.customerResponse.id.toString(),
                         collect_type = selectedItem,
                         amount = amount.text.toString(),
                         dd_no = ddNo.text.toString(),
@@ -211,10 +309,16 @@ class CollectTypeFragment : Fragment() {
                     )
                     billViewModel.dispatch(GenerateBillViewModel.BillActions.CollectBill(request))
                 }
+            } else if (selectedItem == "QR") {
+                findNavController().navigate(
+                    CollectTypeFragmentDirections.actionCollectTypeFragmentToQrWebFragment(
+                        "https://scb.amigotechno.in/mobile-web/get-qr?can_id=" + args.customerResponse.id.toString() + "&amount=" + binding.amount.text.toString()
+                    )
+                )
             } else {
                 //dp api call
                 val request = CollectBillRequest(
-                    can_id = args.customerResponse.id.toString()?:"",
+                    can_id = args.customerResponse.id.toString(),
                     collect_type = selectedItem,
                     amount = amount.text.toString()
                 )
@@ -231,6 +335,36 @@ class CollectTypeFragment : Fragment() {
         requireActivity().bindService(intent, printConnection, AppCompatActivity.BIND_AUTO_CREATE)
     }
 
+    private fun getPayment() {
+        val intent = Intent()
+        intent.setAction("com.pinelabs.masterapp.SERVER")
+        intent.setPackage("com.pinelabs.masterapp")
+        requireActivity().bindService(intent, paymentConnection, AppCompatActivity.BIND_AUTO_CREATE)
+    }
+
+    private fun getDrawableAsBytes(context: Context, drawableId: Int): ByteArray {
+        val resources: Resources = context.resources
+        val inputStream = resources.openRawResource(drawableId)
+        val outputStream = ByteArrayOutputStream()
+
+        try {
+            val buffer = ByteArray(1024)
+            var bytesRead: Int
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                inputStream.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+
+        return outputStream.toByteArray()
+    }
 
     private val printConnection: ServiceConnection = object : ServiceConnection {
         var mServerMessenger: Messenger? = null
@@ -252,53 +386,223 @@ class CollectTypeFragment : Fragment() {
                 headerObject.put("VersionNo", "1.0")
                 detailObject.put("PrintRefNo", "123446779")
                 detailObject.put("SavePrintData", true)
-                val arryData = JSONArray()
-                val printData = JSONObject()
-                printData.put("PrintDataType", 0)
-                printData.put("PrinterWidth", 24)
+                val arrayData = JSONArray()
 
-                val billText = StringBuilder()
 
-                val nextLine = "\n"
-                billText.append("Secunderabad Containment")
-                billText.append(nextLine)
-                billText.append("Bheema Residency")
-                billText.append(nextLine)
-                val billEntries =
-                    arrayOf(arrayOf("Date", millisToDate(System.currentTimeMillis())),
-                        arrayOf("Receipt No", "123456"),
-                        arrayOf("Cashier", "Sridhar"),
-                        arrayOf("Total Amount", args.customerResponse.payable_amount),
-                        arrayOf("Paid Amount", binding.amount.text.toString()),
-                        arrayOf("Balance Amount", binding.balanceAmount.text.toString(), arrayOf("Payment Mode", selectedItem)))
+                val scbName = JSONObject()
+                scbName.put("PrintDataType", 0)
+                scbName.put("PrinterWidth", 28)
+                scbName.put("DataToPrint", " SCB Water Collection \nCourt Compound Secunderabad")
+                scbName.put("IsCenterAligned", true)
+                scbName.put("ImagePath", "")
+                scbName.put("ImageData", "")
 
-                for (entry in billEntries) {
-                    billText.append(String.format("%-10s%10s\n", entry[0], entry[1]))
+                val dateTime = JSONObject()
+                dateTime.put("PrintDataType", 0)
+                dateTime.put("PrinterWidth", 28)
+                dateTime.put(
+                    "DataToPrint", formatText(
+                        28,
+                        "Date:" + millisToDate(System.currentTimeMillis()),
+                        "Time:" + millisToTime(System.currentTimeMillis())
+                    )
+                )
+                dateTime.put("IsCenterAligned", false)
+                dateTime.put("ImagePath", "")
+                dateTime.put("ImageData", "")
+
+                val saleName = JSONObject()
+                saleName.put("PrintDataType", 0)
+                saleName.put("PrinterWidth", 24)
+                saleName.put("DataToPrint", " Collection ")
+                saleName.put("IsCenterAligned", true)
+                saleName.put("ImagePath", "")
+                saleName.put("ImageData", "")
+
+                val paidBy = JSONObject()
+                paidBy.put("PrintDataType", 0)
+                paidBy.put("PrinterWidth", 28)
+                paidBy.put("DataToPrint", formatText(28, "Paid By:", selectedItem))
+                paidBy.put("IsCenterAligned", false)
+                paidBy.put("ImagePath", "")
+                paidBy.put("ImageData", "")
+
+                val baseAmount = JSONObject()
+                baseAmount.put("PrintDataType", 0)
+                baseAmount.put("PrinterWidth", 24)
+                baseAmount.put(
+                    "DataToPrint",
+                    formatText(24, "Paid Amt:", "Rs, " + binding.amount.text.toString())
+                )
+                baseAmount.put("IsCenterAligned", false)
+                baseAmount.put("ImagePath", "")
+                baseAmount.put("ImageData", "")
+
+                val notRequired = JSONObject()
+                notRequired.put("PrintDataType", 0)
+                notRequired.put("PrinterWidth", 28)
+                notRequired.put("DataToPrint", "Signature Not required")
+                notRequired.put("IsCenterAligned", true)
+                notRequired.put("ImagePath", "")
+                notRequired.put("ImageData", "")
+
+                val imageData = JSONObject()
+                imageData.put("PrintDataType", 2)
+                imageData.put("PrinterWidth", 24)
+                imageData.put("DataToPrint", "")
+                imageData.put("IsCenterAligned", true)
+                imageData.put("ImagePath", "")
+                imageData.put("ImageData", hexString)
+
+                val receiptNo = JSONObject()
+                receiptNo.put("PrintDataType", 0)
+                receiptNo.put("PrinterWidth", 28)
+                receiptNo.put("DataToPrint", formatText(28, "Receipt No :", receiptNumber))
+                receiptNo.put("IsCenterAligned", false)
+                receiptNo.put("ImagePath", "")
+                receiptNo.put("ImageData", "")
+
+                val ucnNo = JSONObject()
+                ucnNo.put("PrintDataType", 0)
+                ucnNo.put("PrinterWidth", 28)
+                ucnNo.put(
+                    "DataToPrint",
+                    formatText(28, "UCN No :", args.customerResponse.can_number.toString())
+                )
+                ucnNo.put("IsCenterAligned", false)
+                ucnNo.put("ImagePath", "")
+                ucnNo.put("ImageData", "")
+
+                val ownerName = JSONObject()
+                ownerName.put("PrintDataType", 0)
+                ownerName.put("PrinterWidth", 28)
+                if (args.customerResponse.consumer_name.toString().length > 14) {
+                    ownerName.put(
+                        "DataToPrint",
+                        "Owner Name : " + args.customerResponse.consumer_name.toString()
+                    )
+                } else {
+                    ownerName.put(
+                        "DataToPrint", formatText(
+                            28, "Owner Name :", args.customerResponse.consumer_name.toString()
+                        )
+                    )
                 }
-                billText.append(nextLine)
-                billText.append("--------------------")
-                billText.append(nextLine)
-                billText.append("--------------------")
-                billText.append(nextLine)
-                billText.append(nextLine)
+                ownerName.put("IsCenterAligned", false)
+                ownerName.put("ImagePath", "")
+                ownerName.put("ImageData", "")
+                val plotNo = JSONObject()
+                plotNo.put("PrintDataType", 0)
+                plotNo.put("PrinterWidth", 28)
+                if (args.customerResponse.plot_no.toString().length > 14) {
+                    plotNo.put(
+                        "DataToPrint", "Plot No : " + args.customerResponse.plot_no.toString()
+                    )
+                } else {
+                    plotNo.put(
+                        "DataToPrint",
+                        formatText(28, "Plot No :", args.customerResponse.plot_no.toString())
+                    )
+                }
+                plotNo.put("IsCenterAligned", false)
+                plotNo.put("ImagePath", "")
+                plotNo.put("ImageData", "")
 
-                printData.put("DataToPrint",billText)
-                printData.put("IsCenterAligned", false)
-                printData.put("ImagePath", android.R.attr.path)
-                printData.put("ImageData", "")
-                arryData.put(printData)
-                detailObject.put("Data", arryData)
+                val location = JSONObject()
+                location.put("PrintDataType", 0)
+                location.put("PrinterWidth", 28)
+                if (args.customerResponse.location.toString().length > 14) {
+                    location.put(
+                        "DataToPrint", "Location : " + args.customerResponse.location.toString()
+                    )
+                } else {
+                    location.put(
+                        "DataToPrint",
+                        formatText(28, "Location :", args.customerResponse.location.toString())
+                    )
+                }
+                location.put("IsCenterAligned", false)
+                location.put("ImagePath", "")
+                location.put("ImageData", "")
+
+                val mobileNo = JSONObject()
+                mobileNo.put("PrintDataType", 0)
+                mobileNo.put("PrinterWidth", 28)
+                mobileNo.put(
+                    "DataToPrint",
+                    formatText(28, "Mobile No :", args.customerResponse.phone_no.toString())
+                )
+                mobileNo.put("IsCenterAligned", false)
+                mobileNo.put("ImagePath", "")
+                mobileNo.put("ImageData", "")
+
+                val totalAmount = JSONObject()
+                totalAmount.put("PrintDataType", 0)
+                totalAmount.put("PrinterWidth", 28)
+                totalAmount.put(
+                    "DataToPrint", formatText(
+                        28, "Total Amount :", args.customerResponse.payable_amount.toString()
+                    )
+                )
+                totalAmount.put("IsCenterAligned", false)
+                totalAmount.put("ImagePath", "")
+                totalAmount.put("ImageData", "")
+
+                val paidAmount = JSONObject()
+                paidAmount.put("PrintDataType", 0)
+                paidAmount.put("PrinterWidth", 28)
+                paidAmount.put(
+                    "DataToPrint", formatText(28, "Paid AMt :", binding.amount.text.toString())
+                )
+                paidAmount.put("IsCenterAligned", false)
+                paidAmount.put("ImagePath", "")
+                paidAmount.put("ImageData", "")
+
+                val balanceAmount = JSONObject()
+                balanceAmount.put("PrintDataType", 0)
+                balanceAmount.put("PrinterWidth", 28)
+                balanceAmount.put(
+                    "DataToPrint",
+                    formatText(28, "Balance Amt :", binding.balanceAmount.text.toString())
+                )
+                balanceAmount.put("IsCenterAligned", false)
+                balanceAmount.put("ImagePath", "")
+                balanceAmount.put("ImageData", "")
+
+
+                val gap = JSONObject()
+                gap.put("PrintDataType", 0)
+                gap.put("PrinterWidth", 24)
+                gap.put("DataToPrint", " -------------------- \n ")
+                gap.put("IsCenterAligned", true)
+                gap.put("ImagePath", "")
+                gap.put("ImageData", "")
+
+                arrayData.put(scbName)
+                arrayData.put(dateTime)
+                arrayData.put(saleName)
+                arrayData.put(paidBy)
+                arrayData.put(baseAmount)
+                arrayData.put(notRequired)
+                arrayData.put(imageData)
+                arrayData.put(receiptNo)
+                arrayData.put(ucnNo)
+                arrayData.put(ownerName)
+                arrayData.put(plotNo)
+                arrayData.put(location)
+                arrayData.put(mobileNo)
+                arrayData.put(totalAmount)
+                arrayData.put(balanceAmount)
+                arrayData.put(gap)
+
+                detailObject.put("Data", arrayData)
                 finalObject.put("Header", headerObject)
                 finalObject.put("Detail", detailObject)
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-            data.putString("MASTERAPPREQUEST", finalObject.toString())
-            message.data = data
-            try {
+                data.putString("MASTERAPPREQUEST", finalObject.toString())
+                message.data = data
                 message.replyTo = Messenger(IncomingHandler())
                 mServerMessenger!!.send(message)
-            } catch (e: RemoteException) {
+            } catch (e: JSONException) {
                 e.printStackTrace()
             }
         }
@@ -308,23 +612,55 @@ class CollectTypeFragment : Fragment() {
             isBound = false
         }
     }
+    private val paymentConnection: ServiceConnection = object : ServiceConnection {
+        var mPaymentMessenger: Messenger? = null
+        var isPaymentBound = false
 
-
-    private class IncomingHandler : Handler() {
-        override fun handleMessage(msg: Message) {
-            val bundle: Bundle = msg.getData()
-            val value =
-                bundle.getString("MASTERAPPRESPONSE") // process the response Json as required.
-            Log.e("Tagresponse", value!!)
-            bundle.clear()
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            mPaymentMessenger = Messenger(service)
+            isPaymentBound = true
             try {
-                val `object` = JSONObject(value)
-                val response = `object`.getString("Response")
-                Log.e("JSON respons", "status-- $response")
-            } catch (e: JSONException) {
+                val message: Message = Message.obtain(null, 1001)
+                val data = Bundle()
+                val gson = Gson()
+                val map = hashMapOf(
+                    "ApplicationId" to "c375e49b009d4ecabbef7c7898ca9664",
+                    "UserId" to "1001609",
+                    "MethodId" to "1001",
+                    "VersionNo" to "1.0"
+                )
+
+                val map1 = hashMapOf(
+                    "TransactionType" to "4001",
+                    "BillingRefNo" to args.customerResponse.can_number,
+                    "PaymentAmount" to binding.amount.text.toString() + ".00"
+                )
+
+                val h1 = hashMapOf(
+                    "Header" to map, "Detail" to map1
+                )
+                data.putString("MASTERAPPREQUEST", gson.toJson(h1))
+                Log.d("TAG", "onServiceConnected: " + gson.toJson(h1))
+                message.data = data
+                message.replyTo = Messenger(PaymentHandler())
+                mPaymentMessenger!!.send(message)
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
-            Log.e("Tagresponse", value!!)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            mPaymentMessenger = null
+            isPaymentBound = false
         }
     }
+
+    fun formatText(receiptWidth: Int, leftText: String, rightText: String): String {
+        val leftWidth = receiptWidth / 2
+        val rightWidth = receiptWidth - leftWidth
+        val formattedLeftText = leftText.take(leftWidth)
+        val formattedRightText = rightText.takeLast(rightWidth)
+        return "$formattedLeftText${" ".repeat(receiptWidth - formattedLeftText.length - formattedRightText.length)}$formattedRightText"
+    }
+
 }

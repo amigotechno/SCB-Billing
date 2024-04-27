@@ -17,11 +17,13 @@ data class CollectBillRequest(
 
 
 data class CollectBillResponse(
-    val error : String,
-    val receipt_no :String?,
-    val message:String?
+    val error: String, val receipt_no: String?, val message: String?
 )
+
 data class CansRequest(
-    val ward : String,
-    val beat_code : String? = ""
+    val ward: String, val beat_code: String? = ""
+)
+
+data class GetCan(
+    val can_number: String? = ""
 )

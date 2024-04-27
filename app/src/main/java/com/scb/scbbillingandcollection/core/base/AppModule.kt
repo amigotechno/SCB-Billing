@@ -68,7 +68,7 @@ object AppModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return if (BuildConfig.DEBUG) {
             Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(Constants.DEV_BASE_URL).client(okHttpClient).build()
+                .baseUrl(Constants.PROD_BASE_URL).client(okHttpClient).build()
         } else {
             Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(Constants.PROD_BASE_URL).client(okHttpClient).build()

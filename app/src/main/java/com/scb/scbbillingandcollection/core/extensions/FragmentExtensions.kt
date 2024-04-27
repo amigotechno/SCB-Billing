@@ -556,7 +556,12 @@ fun Context.hideKeyboard(view: View) {
 }
 
 fun millisToDate(millis: Long): String {
-    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val sdf = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
+    val date = Date(millis)
+    return sdf.format(date)
+}
+fun millisToTime(millis: Long): String {
+    val sdf = SimpleDateFormat("HH:MM", Locale.getDefault())
     val date = Date(millis)
     return sdf.format(date)
 }
