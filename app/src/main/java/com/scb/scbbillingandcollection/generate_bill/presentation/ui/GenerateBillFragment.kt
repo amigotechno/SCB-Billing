@@ -41,6 +41,7 @@ import com.scb.scbbillingandcollection.core.extensions.millisToTime
 import com.scb.scbbillingandcollection.core.extensions.observerSharedFlow
 import com.scb.scbbillingandcollection.core.extensions.showCustomToast
 import com.scb.scbbillingandcollection.core.extensions.showDialog
+import com.scb.scbbillingandcollection.core.utils.Constants
 import com.scb.scbbillingandcollection.databinding.FragmentGenerateBillBinding
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.presentation.viewmodel.GenerateBillViewModel
@@ -84,9 +85,6 @@ class GenerateBillFragment : Fragment() {
         initObservers()
 
         val imageBytes = getDrawableAsBytes(requireContext(), R.drawable.logo)
-//        val amigoImageBytes = getDrawableAsBytes(requireContext(), R.drawable.amigo_logo)
-
-        // Convert the byte array to hexadecimal format
         hexString = StringBuilder()
         imageBytes.forEach {
             hexString.append(String.format("%02X", it))
@@ -98,6 +96,7 @@ class GenerateBillFragment : Fragment() {
 //        }
 
         binding.generateBill.clickWithDebounce {
+            binding.generateBill.isEnabled = false
             if (photo_Encoded != "") {
                 val request = GenerateBillRequest(
                     args.request.can_id,
@@ -130,7 +129,7 @@ class GenerateBillFragment : Fragment() {
             generateBill.isEnabled = true
         }
 
-        binding.meterImage.clickWithDebounce {
+        binding.meterImage.setOnClickListener {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (!PermissionUtils.isGranted(*ALL_PERMISSIONS)) {
                 PermissionUtils.permission(*ALL_PERMISSIONS)
@@ -163,7 +162,7 @@ class GenerateBillFragment : Fragment() {
 //                }
 //            }
         }
-        getLocation()
+//        getLocation()
 
         return binding.root
     }
@@ -179,7 +178,7 @@ class GenerateBillFragment : Fragment() {
                 Log.d("Latitude", "getLocationForPunch: " + location.latitude)
             }
             result.error?.let {
-                getLocation()
+//                getLocation()
             }
         }
     }
@@ -283,7 +282,7 @@ class GenerateBillFragment : Fragment() {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
             }
-            getLocation()
+//            getLocation()
         }
 
     }
@@ -300,10 +299,11 @@ class GenerateBillFragment : Fragment() {
                         true
                     )
                 )
-//                setData()
+                setData()
 
             }
             it.error?.let {
+                binding.generateBill.isEnabled = true
                 showCustomToast(R.drawable.ic_error_warning, title = it)
             }
         }
@@ -328,7 +328,8 @@ class GenerateBillFragment : Fragment() {
             val headerObject = JSONObject()
             val detailObject = JSONObject()
             try {
-                headerObject.put("ApplicationId", "c375e49b009d4ecabbef7c7898ca9664")
+                headerObject.put("ApplicationId", Constants.PROD_APP_ID)
+//                headerObject.put("ApplicationId", "4a22e5c0956840da8dbea1d1bc5292b4")
                 headerObject.put("UserId", "1001609")
                 headerObject.put("MethodId", "1002")
                 headerObject.put("VersionNo", "1.0")
@@ -489,13 +490,6 @@ class GenerateBillFragment : Fragment() {
                 billAmount.put("ImagePath", "")
                 billAmount.put("ImageData", "")
 
-//                val amigoImageData = JSONObject()
-//                imageData.put("PrintDataType", 2)
-//                imageData.put("PrinterWidth", 24)
-//                imageData.put("DataToPrint", "")
-//                imageData.put("IsCenterAligned", true)
-//                imageData.put("ImagePath", "")
-//                imageData.put("ImageData", amigoHexString)
 
                 val gap = JSONObject()
                 gap.put("PrintDataType", 0)
@@ -508,7 +502,7 @@ class GenerateBillFragment : Fragment() {
                 arrayData.put(scbName)
                 arrayData.put(noticeTitle)
                 arrayData.put(dateTime)
-//                arrayData.put(imageData)
+                arrayData.put(imageData)
                 arrayData.put(ucnNo)
                 arrayData.put(ownerName)
                 arrayData.put(plotNo)

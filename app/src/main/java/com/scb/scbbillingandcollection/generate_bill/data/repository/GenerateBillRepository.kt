@@ -4,9 +4,11 @@ import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
+import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ConsumerListResponse
+import com.scb.scbbillingandcollection.generate_bill.data.models.DemandAndCollectBill
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.UCNDetails
@@ -24,5 +26,6 @@ interface GenerateBillRepository {
     fun generateBill(request : GenerateBillRequest): Flow<Resource<GenerateBillResponse>>
     fun collectBill(request : CollectBillRequest): Flow<Resource<CollectBillResponse>>
     suspend fun searchUCN(request : GetCan): Resource<UCNDetails>
+    suspend fun printData(request: GetCanId): Resource<DemandAndCollectBill>
 
 }

@@ -1,355 +1,424 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ucnNoLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintEnd_toStartOf="@id/searchBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:placeholderText="Mobile Number">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/ucnNo"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ucnNoLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:hint="@string/enter_mobile_number_text"
-            android:inputType="phone"
-            android:maxLength="10"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/searchBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholderText="Mobile Number">
+
+            <EditText
+                android:id="@+id/ucnNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:hint="@string/enter_mobile_number_text"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/colorPrimary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/searchBtn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="Search"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ucnNoLayout"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/billDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text=" Details "
             android:textColor="@color/colorPrimary"
-            android:textColorHint="@color/colorPrimary" />
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ucnNoLayout" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <!--  <com.google.android.material.textview.MaterialTextView
+              android:id="@+id/docLabel"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/_10sdp"
+              android:layout_marginTop="@dimen/_10sdp"
+              android:text="Date of Conn"
+              android:textColor="@color/black"
+              android:textSize="@dimen/_14sdp"
+              app:layout_constraintEnd_toStartOf="@id/docText"
+              app:layout_constraintHorizontal_chainStyle="spread"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@id/billDetails" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/searchBtn"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:text="Search"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/ucnNoLayout"
-        app:layout_constraintTop_toTopOf="parent" />
+          <com.google.android.material.textview.MaterialTextView
+              android:id="@+id/docText"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/_10sdp"
+              android:text="Bill Details"
+              android:textColor="@color/colorPrimary"
+              android:textSize="@dimen/_14sdp"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toEndOf="@id/docLabel"
+              app:layout_constraintTop_toBottomOf="@id/billDetails" />
+      -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/meterLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="UCN No"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/meterNoText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/billDetails" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/billDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text=" Details "
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ucnNoLayout" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/meterNoText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/meterLabel"
+            app:layout_constraintTop_toBottomOf="@id/billDetails" />
 
-  <!--  <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/docLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Date of Conn"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/docText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/billDetails" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nameLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Name "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/nameTxt"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/meterLabel" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/docText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Bill Details"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/docLabel"
-        app:layout_constraintTop_toBottomOf="@id/billDetails" />
--->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/meterLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Meter No"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/meterNoText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/billDetails" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nameTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/nameLabel"
+            app:layout_constraintTop_toBottomOf="@id/meterLabel" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/meterNoText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="888992"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/meterLabel"
-        app:layout_constraintTop_toBottomOf="@id/billDetails" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/pipeSizeLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Phone No "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/nameTxt"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nameLabel" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/pipeSizeLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Pipe Size "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/meterNoText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/meterLabel" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/pipeSizeTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/pipeSizeLabel"
+            app:layout_constraintTop_toBottomOf="@id/nameLabel" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/pipeSizeTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="25"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/meterLabel"
-        app:layout_constraintTop_toBottomOf="@id/meterLabel" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/categoryLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Plot No "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/meterNoText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pipeSizeLabel" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/categoryLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Category "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/meterNoText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pipeSizeLabel" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/categoryText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/pipeSizeLabel"
+            app:layout_constraintTop_toBottomOf="@id/pipeSizeLabel" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/categoryText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Dd"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/pipeSizeLabel"
-        app:layout_constraintTop_toBottomOf="@id/pipeSizeLabel" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/addressLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Address "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/meterNoText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
 
-   <!-- <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/fwsLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Is FWS "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/docText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/addressText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:ellipsize="end"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/categoryLabel"
+            app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/fwsText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="True"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/categoryLabel"
-        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
--->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/addressLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Address "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/meterNoText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lastBilledLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Last Billed Date"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/demandText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressText" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/addressText"
-        android:layout_width="0dp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/categoryLabel"
-        app:layout_constraintTop_toBottomOf="@id/categoryLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/demandLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Current Month Demand"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/demandText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/demandText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/addressLabel"
-        app:layout_constraintTop_toBottomOf="@id/addressLabel" />
-
-   <!-- <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/serviceChargesLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Service Charges"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/demandText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/demandLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/serviceChargesText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="12"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/demandLabel"
-        app:layout_constraintTop_toBottomOf="@id/demandLabel" />
--->
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/arrearsLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Arrears "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/demandText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/demandLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/arrearsText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/demandLabel"
-        app:layout_constraintTop_toBottomOf="@id/demandLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/klLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="20KL F.W.S Amount "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/demandText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/klLabelText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/arrearsLabel"
-        app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/netLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Net Payable Amount "
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toStartOf="@id/demandText"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/klLabel" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/netText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/klLabel"
-        app:layout_constraintTop_toBottomOf="@id/klLabel" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lastBilledText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/addressLabel"
+            app:layout_constraintTop_toBottomOf="@id/addressText" />
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/collectBill"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_12sdp"
-        android:text="Collect Bill"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/netLabel" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/demandLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Current Month Demand"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/lastBilledText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lastBilledText" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/demandText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lastBilledLabel"
+            app:layout_constraintTop_toBottomOf="@id/lastBilledText" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/serviceChargesLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Service Charges"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/demandText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/demandLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/serviceChargesText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/demandLabel"
+            app:layout_constraintTop_toBottomOf="@id/demandLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/arrearsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Arrears "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/serviceChargesText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/serviceChargesLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/arrearsText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/serviceChargesLabel"
+            app:layout_constraintTop_toBottomOf="@id/serviceChargesLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/payableLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Payable Amount "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/payableText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/arrearsLabel"
+            app:layout_constraintTop_toBottomOf="@id/arrearsLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/klLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="20KL F.W.S Amount "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/payableText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/payableLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/klLabelText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/klLabel"
+            app:layout_constraintTop_toBottomOf="@id/payableLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/netLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Net Payable Amount "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toStartOf="@id/demandText"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/klLabel" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/netText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/klLabel"
+            app:layout_constraintTop_toBottomOf="@id/klLabel" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/collectBill"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_12sdp"
+            android:text="Collect Bill"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/netLabel" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/demandBill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            android:text="Print Demand"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/collectBill" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/receiptBill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            android:text="Print Receipt "
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/collectBill" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

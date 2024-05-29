@@ -35,6 +35,7 @@ import com.scb.scbbillingandcollection.core.extensions.millisToDate
 import com.scb.scbbillingandcollection.core.extensions.millisToTime
 import com.scb.scbbillingandcollection.core.extensions.observerSharedFlow
 import com.scb.scbbillingandcollection.core.extensions.showCustomToast
+import com.scb.scbbillingandcollection.core.utils.Constants
 import com.scb.scbbillingandcollection.databinding.FragmentCollectTypeBinding
 import com.scb.scbbillingandcollection.generate_bill.presentation.viewmodel.GenerateBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -195,6 +196,8 @@ class CollectTypeFragment : Fragment() {
         binding.collectBtn.clickWithDebounce {
             if (selectedItem == "Card") {
                 getPayment()
+            } else if (selectedItem == "QR") {
+                getQRPayment()
             } else {
                 validations()
             }
@@ -342,6 +345,13 @@ class CollectTypeFragment : Fragment() {
         requireActivity().bindService(intent, paymentConnection, AppCompatActivity.BIND_AUTO_CREATE)
     }
 
+    private fun getQRPayment() {
+        val intent = Intent()
+        intent.setAction("com.pinelabs.masterapp.SERVER")
+        intent.setPackage("com.pinelabs.masterapp")
+        requireActivity().bindService(intent, qrConnection, AppCompatActivity.BIND_AUTO_CREATE)
+    }
+
     private fun getDrawableAsBytes(context: Context, drawableId: Int): ByteArray {
         val resources: Resources = context.resources
         val inputStream = resources.openRawResource(drawableId)
@@ -380,7 +390,8 @@ class CollectTypeFragment : Fragment() {
             val headerObject = JSONObject()
             val detailObject = JSONObject()
             try {
-                headerObject.put("ApplicationId", "c375e49b009d4ecabbef7c7898ca9664")
+//                headerObject.put("ApplicationId", "c375e49b009d4ecabbef7c7898ca9664")
+                headerObject.put("ApplicationId", Constants.PROD_APP_ID)
                 headerObject.put("UserId", "1001609")
                 headerObject.put("MethodId", "1002")
                 headerObject.put("VersionNo", "1.0")
@@ -624,7 +635,8 @@ class CollectTypeFragment : Fragment() {
                 val data = Bundle()
                 val gson = Gson()
                 val map = hashMapOf(
-                    "ApplicationId" to "c375e49b009d4ecabbef7c7898ca9664",
+//                    "ApplicationId" to "c375e49b009d4ecabbef7c7898ca9664",
+                    "ApplicationId" to Constants.PROD_APP_ID,
                     "UserId" to "1001609",
                     "MethodId" to "1001",
                     "VersionNo" to "1.0"
@@ -633,7 +645,7 @@ class CollectTypeFragment : Fragment() {
                 val map1 = hashMapOf(
                     "TransactionType" to "4001",
                     "BillingRefNo" to args.customerResponse.can_number,
-                    "PaymentAmount" to binding.amount.text.toString() + ".00"
+                    "PaymentAmount" to binding.amount.text.toString().toDouble() * 100
                 )
 
                 val h1 = hashMapOf(
@@ -652,6 +664,49 @@ class CollectTypeFragment : Fragment() {
         override fun onServiceDisconnected(name: ComponentName) {
             mPaymentMessenger = null
             isPaymentBound = false
+        }
+    }
+    private val qrConnection: ServiceConnection = object : ServiceConnection {
+        var mQRMessenger: Messenger? = null
+        var isQRBound = false
+
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            mQRMessenger = Messenger(service)
+            isQRBound = true
+            try {
+                val message: Message = Message.obtain(null, 1001)
+                val data = Bundle()
+                val gson = Gson()
+                val map = hashMapOf(
+                    "ApplicationId" to Constants.PROD_APP_ID,
+//                    "ApplicationId" to "4a22e5c0956840da8dbea1d1bc5292b4",
+                    "UserId" to "1001609",
+                    "MethodId" to "1001",
+                    "VersionNo" to "1.0"
+                )
+
+                val map1 = hashMapOf(
+                    "TransactionType" to "5120",
+                    "BillingRefNo" to args.customerResponse.can_number,
+                    "PaymentAmount" to  binding.amount.text.toString().toDouble() * 100
+                )
+
+                val h1 = hashMapOf(
+                    "Header" to map, "Detail" to map1
+                )
+                data.putString("MASTERAPPREQUEST", gson.toJson(h1))
+                Log.d("TAG", "onServiceConnected: " + gson.toJson(h1))
+                message.data = data
+                message.replyTo = Messenger(PaymentHandler())
+                mQRMessenger!!.send(message)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            mQRMessenger = null
+            isQRBound = false
         }
     }
 

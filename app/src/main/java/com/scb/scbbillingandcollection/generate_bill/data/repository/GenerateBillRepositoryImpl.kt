@@ -4,11 +4,13 @@ import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
+import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
 import com.scb.scbbillingandcollection.core.retrofit.ApiInterface
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.core.retrofit.SafeApiCall
 import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ConsumerListResponse
+import com.scb.scbbillingandcollection.generate_bill.data.models.DemandAndCollectBill
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.UCNDetails
@@ -83,6 +85,15 @@ class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: A
     override suspend fun searchUCN(request: GetCan): Resource<UCNDetails> {
         val response = safeApiCall {
             apiInterface.getUcnInfo(request)
+        }
+        return if (response is Resource.Success) {
+            Resource.Success(response.value)
+        } else response
+    }
+
+    override suspend fun printData(request: GetCanId): Resource<DemandAndCollectBill> {
+        val response = safeApiCall {
+            apiInterface.printData(request)
         }
         return if (response is Resource.Success) {
             Resource.Success(response.value)

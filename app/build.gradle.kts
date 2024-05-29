@@ -15,15 +15,29 @@ android {
         applicationId = "com.scb.scbbillingandcollection"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = "Scb"
+            keyPassword = "scb@123"
+            storeFile = file("/Users/saikumar/Desktop/scb.jks")
+            storePassword = "scb@123"
+            enableV1Signing = true
+            enableV2Signing = true
+        }
+//        SCB@1234
+        //scb@123
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

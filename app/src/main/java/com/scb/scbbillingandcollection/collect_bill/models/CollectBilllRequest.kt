@@ -27,3 +27,6 @@ data class CansRequest(
 data class GetCan(
     val can_number: String? = ""
 )
+data class GetCanId(
+    val can_id: String? = ""
+)
