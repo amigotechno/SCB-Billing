@@ -1,5 +1,7 @@
 package com.scb.scbbillingandcollection.core.utils
 
+import org.json.JSONObject
+
 object Constants {
 
     const val DEV_BASE_URL = "https://scb.amigotechno.in/mobile-apis/"
@@ -10,5 +12,6 @@ object Constants {
 //    const val PROD_APP_ID = "c375e49b009d4ecabbef7c7898ca9664"
 
     const val UNABLE_TO_RESOLVE_HOST = "Unable to resolve host"
+
 
 }

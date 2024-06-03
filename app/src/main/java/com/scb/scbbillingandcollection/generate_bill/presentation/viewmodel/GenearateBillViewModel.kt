@@ -185,14 +185,16 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                             if (error == "0") {
                                 _generateBillResponse.emit(
                                     BillState.GenerateBillResponse(
-                                        data = response.value.bill_number.toString(),
+                                        billNo = response.value.bill_number.toString(),
+                                        billDate = response.value.bill_date,
                                         error = null
                                     )
                                 )
                             } else {
                                 _generateBillResponse.emit(
                                     BillState.GenerateBillResponse(
-                                        data = null,
+                                        billNo = null,
+                                        billDate = null,
                                         error = response.value.message
                                     )
                                 )
@@ -204,7 +206,8 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                     is Resource.Failure -> {
                         _generateBillResponse.emit(
                             BillState.GenerateBillResponse(
-                                data = null,
+                                billNo = null,
+                                billDate = null,
                                 error = response.errorBody.toString()
                             )
                         )
@@ -313,7 +316,7 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
     sealed class BillState {
         data class ConsumerList(val data: List<Consumers?>? = null, val error: String? = null)
         data class ViewBill(val data: ViewBillResponse.Amounts? = null, val error: String? = null)
-        data class GenerateBillResponse(val data: String? = null, val error: String? = null)
+        data class GenerateBillResponse(val billNo: String? = null,val billDate: String? = null, val error: String? = null)
         data class CollectBillResponse(val data: String? = null, val error: String? = null)
         data class WardsData(
             val data: ArrayList<Pair<String, String>>? = null,

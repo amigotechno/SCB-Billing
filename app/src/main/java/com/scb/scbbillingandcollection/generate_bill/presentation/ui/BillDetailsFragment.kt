@@ -220,6 +220,7 @@ class BillDetailsFragment : Fragment() {
                 scbName.put("ImagePath", "")
                 scbName.put("ImageData", "")
 
+
                 val noticeTitle = JSONObject()
                 noticeTitle.put("PrintDataType", 0)
                 noticeTitle.put("PrinterWidth", 28)
@@ -330,7 +331,7 @@ class BillDetailsFragment : Fragment() {
                     "DataToPrint",
                     formatText(
                         28,
-                        "Current Demand :",
+                        "Current Demand:",
                         printData?.bill?.current_month_demand.toString()
                     )
                 )
@@ -346,12 +347,20 @@ class BillDetailsFragment : Fragment() {
                     formatText(
                         28,
                         "Curr Mth :",
-                        convertDateToMonthAbbreviation(printData?.bill?.billdate.toString())
-                    )
+                        args.customerResponse.last_billed_date.toString())
                 )
+//                convertDateToMonthAbbreviation(printData?.bill?.billdate.toString()
                 currentMonth.put("IsCenterAligned", false)
                 currentMonth.put("ImagePath", "")
                 currentMonth.put("ImageData", "")
+
+                val billNo = JSONObject()
+                billNo.put("PrintDataType", 0)
+                billNo.put("PrinterWidth", 28)
+                billNo.put("DataToPrint", formatText(28, "Bill No :", printData?.bill?.bill_no.toString()))
+                billNo.put("IsCenterAligned", false)
+                billNo.put("ImagePath", "")
+                billNo.put("ImageData", "")
 
                 val arrearAmount = JSONObject()
                 arrearAmount.put("PrintDataType", 0)
@@ -363,6 +372,7 @@ class BillDetailsFragment : Fragment() {
                 arrearAmount.put("IsCenterAligned", false)
                 arrearAmount.put("ImagePath", "")
                 arrearAmount.put("ImageData", "")
+
 
                 val billAmount = JSONObject()
                 billAmount.put("PrintDataType", 0)
@@ -384,19 +394,90 @@ class BillDetailsFragment : Fragment() {
                 gap.put("ImagePath", "")
                 gap.put("ImageData", "")
 
+                val gaps = JSONObject()
+                gaps.put("PrintDataType", 0)
+                gaps.put("PrinterWidth", 24)
+                gaps.put("DataToPrint", " --------------------  ")
+                gaps.put("IsCenterAligned", true)
+                gaps.put("ImagePath", "")
+                gaps.put("ImageData", "")
+
+                val sd = JSONObject()
+                sd.put("PrintDataType", 0)
+                sd.put("PrinterWidth", 28)
+                sd.put(
+                    "DataToPrint",
+                    formatText(
+                        28,
+                       "" ,
+                       "Sd/-")
+                    )
+
+                sd.put("IsCenterAligned", false)
+                sd.put("ImagePath", "")
+                sd.put("ImageData", "")
+
+                val ceo = JSONObject()
+                ceo.put("PrintDataType", 0)
+                ceo.put("PrinterWidth", 28)
+                ceo.put(
+                    "DataToPrint",
+                    formatText(
+                        28,
+                       "" ,
+                       "For CEO, SCB")
+                    )
+
+                ceo.put("IsCenterAligned", false)
+                ceo.put("ImagePath", "")
+                ceo.put("ImageData", "")
+
+                val saveWater = JSONObject()
+                saveWater.put("PrintDataType", 0)
+                saveWater.put("PrinterWidth", 28)
+                saveWater.put("DataToPrint", "SAVE WATER.WATER IS PRECIOUS")
+                saveWater.put("IsCenterAligned", true)
+                saveWater.put("ImagePath", "")
+                saveWater.put("ImageData", "")
+
+                val emptyGap = JSONObject()
+                emptyGap.put("PrintDataType", 0)
+                emptyGap.put("PrinterWidth", 24)
+                emptyGap.put("DataToPrint", "  ")
+                emptyGap.put("IsCenterAligned", true)
+                emptyGap.put("ImagePath", "")
+                emptyGap.put("ImageData", "")
                 arrayData.put(scbName)
+                arrayData.put(emptyGap)
                 arrayData.put(noticeTitle)
+                arrayData.put(emptyGap)
                 arrayData.put(dateTime)
-//                arrayData.put(imageData)
+                arrayData.put(imageData)
+                arrayData.put(emptyGap)
                 arrayData.put(ucnNo)
+                arrayData.put(emptyGap)
                 arrayData.put(ownerName)
+                arrayData.put(emptyGap)
                 arrayData.put(plotNo)
+                arrayData.put(emptyGap)
                 arrayData.put(location)
+                arrayData.put(emptyGap)
                 arrayData.put(mobileNo)
-                arrayData.put(currentDemand)
+                arrayData.put(emptyGap)
                 arrayData.put(currentMonth)
+                arrayData.put(emptyGap)
+                arrayData.put(billNo)
+                arrayData.put(emptyGap)
+                arrayData.put(currentDemand)
+                arrayData.put(emptyGap)
                 arrayData.put(arrearAmount)
+                arrayData.put(gaps)
                 arrayData.put(billAmount)
+                arrayData.put(gap)
+                arrayData.put(sd)
+                arrayData.put(ceo)
+                arrayData.put(emptyGap)
+                arrayData.put(saveWater)
                 arrayData.put(gap)
 
                 detailObject.put("Data", arrayData)
@@ -691,21 +772,93 @@ class BillDetailsFragment : Fragment() {
                 gap.put("ImagePath", "")
                 gap.put("ImageData", "")
 
+                val emptyGap = JSONObject()
+                emptyGap.put("PrintDataType", 0)
+                emptyGap.put("PrinterWidth", 24)
+                emptyGap.put("DataToPrint", "  ")
+                emptyGap.put("IsCenterAligned", true)
+                emptyGap.put("ImagePath", "")
+                emptyGap.put("ImageData", "")
+
+                val gaps = JSONObject()
+                gaps.put("PrintDataType", 0)
+                gaps.put("PrinterWidth", 24)
+                gaps.put("DataToPrint", " --------------------  ")
+                gaps.put("IsCenterAligned", true)
+                gaps.put("ImagePath", "")
+                gaps.put("ImageData", "")
+
+                val sd = JSONObject()
+                sd.put("PrintDataType", 0)
+                sd.put("PrinterWidth", 28)
+                sd.put(
+                    "DataToPrint",
+                    formatText(
+                        28,
+                        "" ,
+                        "Sd/-")
+                )
+
+                sd.put("IsCenterAligned", false)
+                sd.put("ImagePath", "")
+                sd.put("ImageData", "")
+
+                val ceo = JSONObject()
+                ceo.put("PrintDataType", 0)
+                ceo.put("PrinterWidth", 28)
+                ceo.put(
+                    "DataToPrint",
+                    formatText(
+                        28,
+                        "" ,
+                        "For CEO, SCB")
+                )
+
+                ceo.put("IsCenterAligned", false)
+                ceo.put("ImagePath", "")
+                ceo.put("ImageData", "")
+
+                val saveWater = JSONObject()
+                saveWater.put("PrintDataType", 0)
+                saveWater.put("PrinterWidth", 28)
+                saveWater.put("DataToPrint", "SAVE WATER.WATER IS PRECIOUS")
+                saveWater.put("IsCenterAligned", true)
+                saveWater.put("ImagePath", "")
+                saveWater.put("ImageData", "")
+
                 arrayData.put(scbName)
+                arrayData.put(emptyGap)
                 arrayData.put(dateTime)
+                arrayData.put(emptyGap)
                 arrayData.put(saleName)
+                arrayData.put(emptyGap)
                 arrayData.put(paidBy)
+                arrayData.put(emptyGap)
                 arrayData.put(baseAmount)
+                arrayData.put(emptyGap)
                 arrayData.put(notRequired)
                 arrayData.put(imageData)
+                arrayData.put(emptyGap)
                 arrayData.put(receiptNo)
+                arrayData.put(emptyGap)
                 arrayData.put(ucnNo)
+                arrayData.put(emptyGap)
                 arrayData.put(ownerName)
+                arrayData.put(emptyGap)
                 arrayData.put(plotNo)
+                arrayData.put(emptyGap)
                 arrayData.put(location)
+                arrayData.put(emptyGap)
                 arrayData.put(mobileNo)
+                arrayData.put(emptyGap)
                 arrayData.put(totalAmount)
+                arrayData.put(gaps)
                 arrayData.put(balanceAmount)
+                arrayData.put(gap)
+                arrayData.put(sd)
+                arrayData.put(ceo)
+                arrayData.put(emptyGap)
+                arrayData.put(saveWater)
                 arrayData.put(gap)
 
                 detailObject.put("Data", arrayData)

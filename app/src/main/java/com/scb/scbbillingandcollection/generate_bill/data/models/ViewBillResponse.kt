@@ -42,6 +42,7 @@ data class GenerateBillRequest(
 data class GenerateBillResponse(
     val error:String?,
     val bill_number:String?,
+    val bill_date:String?,
     val message:String?,
 )
 
