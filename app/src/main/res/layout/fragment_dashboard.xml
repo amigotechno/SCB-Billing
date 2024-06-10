@@ -77,6 +77,57 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reportsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_rectangle_grey"
+        android:minHeight="@dimen/_110sdp"
+        android:padding="12dp"
+        app:layout_constraintEnd_toStartOf="@id/collectLayout"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/generateLayout">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reportBill"
+            style="@style/title_primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="Reports"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/reportImage" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reportDesc"
+            style="@style/text_secondary_regular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:minLines="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reportBill"
+            android:text="You can see the transactions" />
+
+        <ImageView
+            android:id="@+id/reportImage"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/reports"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/collectLayout"

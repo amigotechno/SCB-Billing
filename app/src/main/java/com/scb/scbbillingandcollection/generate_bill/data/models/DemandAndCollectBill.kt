@@ -16,7 +16,8 @@ data class Bill(
     val paid_amount: String,
     val payable_amount: String,
     val rebate_amount: String,
-    val service_charges: String
+    val service_charges: String,
+    val total_amount: String
 )
 
 data class Receipt(
@@ -36,5 +37,6 @@ data class UcnDetailsX(
     val consumer_name: String,
     val id: String,
     val location: String,
-    val plot_no: String
+    val plot_no: String,
+    val last_billed_date: String,
 )

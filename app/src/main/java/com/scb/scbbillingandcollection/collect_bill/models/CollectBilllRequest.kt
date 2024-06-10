@@ -30,3 +30,7 @@ data class GetCan(
 data class GetCanId(
     val can_id: String? = ""
 )
+
+data class GetCollection(
+    val report_date: String? = ""
+)

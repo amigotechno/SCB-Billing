@@ -7,8 +7,10 @@ import com.scb.scbbillingandcollection.auth.data.models.VersionResponse
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionModel
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
+import com.scb.scbbillingandcollection.collect_bill.models.GetCollection
 import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.DemandAndCollectBill
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
@@ -54,5 +56,7 @@ interface ApiInterface {
     @POST("getUCNBillReceipt.json")
     suspend fun printData(@Body request: GetCanId): DemandAndCollectBill
 
+    @POST("getCollections.json")
+    suspend fun getCollections(@Body request: GetCollection): CollectionModel
 
 }

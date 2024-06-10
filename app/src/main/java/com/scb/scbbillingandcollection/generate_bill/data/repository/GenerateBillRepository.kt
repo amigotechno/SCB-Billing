@@ -3,8 +3,10 @@ package com.scb.scbbillingandcollection.generate_bill.data.repository
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionModel
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
+import com.scb.scbbillingandcollection.collect_bill.models.GetCollection
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ConsumerListResponse
@@ -27,5 +29,6 @@ interface GenerateBillRepository {
     fun collectBill(request : CollectBillRequest): Flow<Resource<CollectBillResponse>>
     suspend fun searchUCN(request : GetCan): Resource<UCNDetails>
     suspend fun printData(request: GetCanId): Resource<DemandAndCollectBill>
+    suspend fun getReports(request: GetCollection): Resource<CollectionModel>
 
 }

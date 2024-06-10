@@ -276,10 +276,9 @@ class CollectBillDetailsFragment : Fragment() {
                     formatText(
                         28,
                         "Curr Mth :",
-                        convertDateToMonthAbbreviation(printData?.bill?.billdate.toString())
-                    )
+                        printData?.ucn_details?.last_billed_date.toString())
                 )
-
+//                convertDateToMonthAbbreviation(printData?.bill?.billdate.toString()
                 currentMonth.put("IsCenterAligned", false)
                 currentMonth.put("ImagePath", "")
                 currentMonth.put("ImageData", "")
@@ -305,12 +304,46 @@ class CollectBillDetailsFragment : Fragment() {
                 arrearAmount.put("ImagePath", "")
                 arrearAmount.put("ImageData", "")
 
+                val fwsAmount = JSONObject()
+                fwsAmount.put("PrintDataType", 0)
+                fwsAmount.put("PrinterWidth", 28)
+                fwsAmount.put(
+                    "DataToPrint",
+                    formatText(28, "20KL F.W.S :", printData?.bill?.rebate_amount.toString())
+                )
+                fwsAmount.put("IsCenterAligned", false)
+                fwsAmount.put("ImagePath", "")
+                fwsAmount.put("ImageData", "")
+
+                val totalAmount = JSONObject()
+                totalAmount.put("PrintDataType", 0)
+                totalAmount.put("PrinterWidth", 28)
+                totalAmount.put(
+                    "DataToPrint", formatText(
+                        28, "Total Amount :", printData?.bill?.total_amount.toString()
+                    )
+                )
+                totalAmount.put("IsCenterAligned", false)
+                totalAmount.put("ImagePath", "")
+                totalAmount.put("ImageData", "")
+
+                val paidAmount = JSONObject()
+                paidAmount.put("PrintDataType", 0)
+                paidAmount.put("PrinterWidth", 28)
+                paidAmount.put(
+                    "DataToPrint",
+                    formatText(28, "Paid Amt :", printData?.bill?.paid_amount.toString())
+                )
+                paidAmount.put("IsCenterAligned", false)
+                paidAmount.put("ImagePath", "")
+                paidAmount.put("ImageData", "")
+
                 val billAmount = JSONObject()
                 billAmount.put("PrintDataType", 0)
                 billAmount.put("PrinterWidth", 28)
                 billAmount.put(
                     "DataToPrint",
-                    formatText(28, "Bill Amt :", printData?.bill?.net_amount.toString())
+                    formatText(28, "Balance Amt :", printData?.bill?.net_amount.toString())
                 )
                 billAmount.put("IsCenterAligned", false)
                 billAmount.put("ImagePath", "")
@@ -388,6 +421,8 @@ class CollectBillDetailsFragment : Fragment() {
                 arrayData.put(dateTime)
                 arrayData.put(imageData)
                 arrayData.put(emptyGap)
+                arrayData.put(billNo)
+                arrayData.put(emptyGap)
                 arrayData.put(ucnNo)
                 arrayData.put(emptyGap)
                 arrayData.put(ownerName)
@@ -400,11 +435,15 @@ class CollectBillDetailsFragment : Fragment() {
                 arrayData.put(emptyGap)
                 arrayData.put(currentMonth)
                 arrayData.put(emptyGap)
-                arrayData.put(billNo)
-                arrayData.put(emptyGap)
                 arrayData.put(currentDemand)
                 arrayData.put(emptyGap)
                 arrayData.put(arrearAmount)
+                arrayData.put(emptyGap)
+                arrayData.put(fwsAmount)
+                arrayData.put(emptyGap)
+                arrayData.put(totalAmount)
+                arrayData.put(emptyGap)
+                arrayData.put(paidAmount)
                 arrayData.put(gaps)
                 arrayData.put(billAmount)
                 arrayData.put(gap)
@@ -617,7 +656,7 @@ class CollectBillDetailsFragment : Fragment() {
                 totalAmount.put("PrinterWidth", 28)
                 totalAmount.put(
                     "DataToPrint", formatText(
-                        28, "Total Amount :", args.customerResponse.payable_amount.toString()
+                        28, "Total Amount :", printData?.bill?.total_amount.toString()
                     )
                 )
                 totalAmount.put("IsCenterAligned", false)
@@ -635,13 +674,13 @@ class CollectBillDetailsFragment : Fragment() {
                 paidAmount.put("ImagePath", "")
                 paidAmount.put("ImageData", "")
 
-                val amount = (printData!!.bill!!.net_amount.toDouble()) - (printData!!.bill!!.paid_amount.toDouble())
+//                val amount = (printData!!.bill!!.net_amount.toDouble()) - (printData!!.bill!!.paid_amount.toDouble())
                 val balanceAmount = JSONObject()
                 balanceAmount.put("PrintDataType", 0)
                 balanceAmount.put("PrinterWidth", 28)
                 balanceAmount.put(
                     "DataToPrint",
-                    formatText(28, "Balance Amt :", amount.toString())
+                    formatText(28, "Balance Amt :", printData?.bill?.net_amount.toString())
                 )
                 balanceAmount.put("IsCenterAligned", false)
                 balanceAmount.put("ImagePath", "")

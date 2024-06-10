@@ -45,6 +45,13 @@ class DashboardFragment : Fragment() {
             )
         }
 
+        binding.reportsLayout.clickWithDebounce {
+            findNavController().navigate(
+                DashboardFragmentDirections.actionDashboardFragmentToReportsFragment(
+                )
+            )
+        }
+
         binding.logoutBtn.clickWithDebounce {
             requireContext().showDialog(title = "LogOut",
                 description = "Are You Sure to Logout?",
