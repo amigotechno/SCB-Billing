@@ -59,6 +59,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phNo"
             tools:text="Hyderabad Khairathabad" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/fws"
+            style="@style/text_primary_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FWS Applicable"
+            android:visibility="gone"
+            android:drawableStart="@drawable/ic_check_green"
+            android:gravity="end"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="#19841D"
+            app:layout_constraintTop_toBottomOf="@id/address" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

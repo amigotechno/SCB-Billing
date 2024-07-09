@@ -1,6 +1,7 @@
 package com.scb.scbbillingandcollection.generate_bill.presentation.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,11 @@ class ConsumersListAdapter(private val onClick: (Consumers) -> Unit) :
             canNumber.text = currentItem.can_number
             consumerName.text = currentItem.consumer_name
             scbNo.text = currentItem.scb_no
+            if (currentItem.is_fws==1){
+                fws.visibility = View.VISIBLE
+            }else{
+                fws.visibility = View.GONE
+            }
         }
         holder.itemView.rootView.clickWithDebounce {
             onClick(currentItem)

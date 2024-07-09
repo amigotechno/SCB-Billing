@@ -84,7 +84,7 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
 
     }
 
-    private suspend fun getBeats(wardNo:String) {
+    private suspend fun getBeats(wardNo: String) {
         when (val response = repository.getBeatCodes(wardNo)) {
             is Resource.Success -> {
 
@@ -187,6 +187,11 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                                     BillState.GenerateBillResponse(
                                         billNo = response.value.bill_number.toString(),
                                         billDate = response.value.bill_date,
+                                        prevReading = response.value.previous_reading,
+                                        prevReadingDate = response.value.previous_reading_date,
+                                        presentReading = response.value.present_reading,
+                                        presentReadingDate = response.value.present_reading_date,
+                                        units = response.value.units,
                                         error = null
                                     )
                                 )
@@ -293,6 +298,7 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                 is BillActions.GetCansList -> {
                     generateBillList(action.request)
                 }
+
                 is BillActions.GetBeatsList -> {
                     getBeats(action.wardNo)
                 }
@@ -308,20 +314,31 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
         data class GenerateBill(val request: GenerateBillRequest) : BillActions()
         data class CollectBill(val request: CollectBillRequest) : BillActions()
 
-        data class GetCansList (val request :CansRequest): BillActions()
-        data class GetBeatsList (val wardNo:String): BillActions()
+        data class GetCansList(val request: CansRequest) : BillActions()
+        data class GetBeatsList(val wardNo: String) : BillActions()
 
     }
 
     sealed class BillState {
         data class ConsumerList(val data: List<Consumers?>? = null, val error: String? = null)
         data class ViewBill(val data: ViewBillResponse.Amounts? = null, val error: String? = null)
-        data class GenerateBillResponse(val billNo: String? = null,val billDate: String? = null, val error: String? = null)
+        data class GenerateBillResponse(
+            val billNo: String? = null,
+            val billDate: String? = null,
+            val prevReading: String? = null,
+            val presentReading: String? = null,
+            val prevReadingDate: String? = null,
+            val presentReadingDate: String? = null,
+            val units: String? = null,
+            val error: String? = null
+        )
+
         data class CollectBillResponse(val data: String? = null, val error: String? = null)
         data class WardsData(
             val data: ArrayList<Pair<String, String>>? = null,
             val error: String? = null
         )
+
         data class BeatsData(
             val data: ArrayList<Pair<String, String>>? = null,
             val error: String? = null

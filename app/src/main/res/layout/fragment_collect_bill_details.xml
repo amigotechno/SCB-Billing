@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="Phone No "
+            android:text="Pipe Size "
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp"
             app:layout_constraintEnd_toStartOf="@id/nameTxt"
@@ -417,6 +417,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/collectBill" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/updateSCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_15sdp"
+            android:text="Update SCB No "
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/receiptBill" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

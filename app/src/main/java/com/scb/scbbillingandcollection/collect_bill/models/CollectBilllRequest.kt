@@ -34,3 +34,8 @@ data class GetCanId(
 data class GetCollection(
     val report_date: String? = ""
 )
+
+data class UpdateSCB(
+    val can_id: String,
+    val scb_no: String
+)

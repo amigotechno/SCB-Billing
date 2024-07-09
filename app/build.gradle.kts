@@ -15,8 +15,8 @@ android {
         applicationId = "com.scb.scbbillingandcollection"
         minSdk = 24
         targetSdk = 34
-        versionCode = 5
-        versionName = "3.2"
+        versionCode = 6
+        versionName = "6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

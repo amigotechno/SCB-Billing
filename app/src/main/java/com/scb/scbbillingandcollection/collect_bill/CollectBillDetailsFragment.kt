@@ -31,6 +31,7 @@ import com.scb.scbbillingandcollection.core.utils.Constants
 import com.scb.scbbillingandcollection.databinding.FragmentCollectBillDetailsBinding
 import com.scb.scbbillingandcollection.generate_bill.data.models.DemandAndCollectBill
 import com.scb.scbbillingandcollection.generate_bill.data.repository.GenerateBillRepositoryImpl
+import com.scb.scbbillingandcollection.generate_bill.presentation.ui.BillDetailsFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.json.JSONArray
@@ -72,12 +73,16 @@ class CollectBillDetailsFragment : Fragment() {
         binding.nameTxt.text = args.customerResponse.consumer_name
         binding.addressText.text = args.customerResponse.location
         binding.categoryText.text = args.customerResponse.category
-        binding.pipeSizeTxt.text = args.customerResponse.phone_no
+        binding.pipeSizeTxt.text = args.customerResponse.pipe_size
         binding.meterNoText.text = args.customerResponse.can_number
         binding.lastBilledText.text = args.customerResponse.last_billed_date
 
         binding.collectBill.clickWithDebounce {
             findNavController().navigate(CollectBillDetailsFragmentDirections.actionCollectBillDetailsFragmentToCollectTypeFragment(args.customerResponse))
+        }
+
+        binding.updateSCB.clickWithDebounce {
+            findNavController().navigate(CollectBillDetailsFragmentDirections.actionCollectBillDetailsFragmentToUpdateSCBFragment(args.customerResponse.id.toString()))
         }
 
         binding.demandBill.clickWithDebounce {
@@ -149,6 +154,7 @@ class CollectBillDetailsFragment : Fragment() {
                 scbName.put("IsCenterAligned", true)
                 scbName.put("ImagePath", "")
                 scbName.put("ImageData", "")
+
 
                 val noticeTitle = JSONObject()
                 noticeTitle.put("PrintDataType", 0)
@@ -253,6 +259,35 @@ class CollectBillDetailsFragment : Fragment() {
                 mobileNo.put("ImagePath", "")
                 mobileNo.put("ImageData", "")
 
+                val pipeSize = JSONObject()
+                pipeSize.put("PrintDataType", 0)
+                pipeSize.put("PrinterWidth", 28)
+                pipeSize.put(
+                    "DataToPrint",
+                    formatText(28, "Pipe Size :", args.customerResponse.pipe_size.toString())
+                )
+                pipeSize.put("IsCenterAligned", false)
+                pipeSize.put("ImagePath", "")
+                pipeSize.put("ImageData", "")
+
+                val category = JSONObject()
+                category.put("PrintDataType", 0)
+                category.put("PrinterWidth", 28)
+                if (printData?.ucn_details?.category.toString().length > 14) {
+                    category.put(
+                        "DataToPrint", ("Category : " + printData?.ucn_details?.category)
+                    )
+                } else {
+                    category.put(
+                        "DataToPrint",
+                        formatText(28, "Category:", printData?.ucn_details?.category?:"")
+                    )
+                }
+
+                category.put("IsCenterAligned", false)
+                category.put("ImagePath", "")
+                category.put("ImageData", "")
+
                 val currentDemand = JSONObject()
                 currentDemand.put("PrintDataType", 0)
                 currentDemand.put("PrinterWidth", 28)
@@ -260,7 +295,7 @@ class CollectBillDetailsFragment : Fragment() {
                     "DataToPrint",
                     formatText(
                         28,
-                        "Current Demand :",
+                        "Current Demand:",
                         printData?.bill?.current_month_demand.toString()
                     )
                 )
@@ -276,22 +311,97 @@ class CollectBillDetailsFragment : Fragment() {
                     formatText(
                         28,
                         "Curr Mth :",
-                        printData?.ucn_details?.last_billed_date.toString())
+                        printData?.ucn_details?.last_billed_date.toString()
+                    )
                 )
 //                convertDateToMonthAbbreviation(printData?.bill?.billdate.toString()
                 currentMonth.put("IsCenterAligned", false)
                 currentMonth.put("ImagePath", "")
                 currentMonth.put("ImageData", "")
 
-
                 val billNo = JSONObject()
                 billNo.put("PrintDataType", 0)
                 billNo.put("PrinterWidth", 28)
-                billNo.put("DataToPrint", formatText(28, "Bill No :", printData?.bill?.bill_no.toString()))
+                billNo.put(
+                    "DataToPrint",
+                    formatText(28, "Bill No :", printData?.bill?.bill_no.toString())
+                )
                 billNo.put("IsCenterAligned", false)
                 billNo.put("ImagePath", "")
                 billNo.put("ImageData", "")
 
+
+                /// FWS
+
+                val adhaarStatus = JSONObject()
+                adhaarStatus.put("PrintDataType", 0)
+                adhaarStatus.put("PrinterWidth", 28)
+                adhaarStatus.put("DataToPrint", formatText(28, "Aadhaar Status:", printData?.ucn_details?.aadhar_status?:"" ))
+                adhaarStatus.put("IsCenterAligned", false)
+                adhaarStatus.put("ImagePath", "")
+                adhaarStatus.put("ImageData", "")
+
+                val meterStatus = JSONObject()
+                meterStatus.put("PrintDataType", 0)
+                meterStatus.put("PrinterWidth", 28)
+                meterStatus.put("DataToPrint", formatText(28, "Meter Status:", printData?.ucn_details?.meter_status?:""))
+                meterStatus.put("IsCenterAligned", false)
+                meterStatus.put("ImagePath", "")
+                meterStatus.put("ImageData", "")
+
+                val prevReading = JSONObject()
+                prevReading.put("PrintDataType", 0)
+                prevReading.put("PrinterWidth", 28)
+                prevReading.put(
+                    "DataToPrint",
+                    formatText(28, "Open :", printData?.bill?.previous_reading ?: "0")
+                )
+                prevReading.put("IsCenterAligned", false)
+                prevReading.put("ImagePath", "")
+                prevReading.put("ImageData", "")
+                val prevReadingDate = JSONObject()
+                prevReadingDate.put("PrintDataType", 0)
+                prevReadingDate.put("PrinterWidth", 28)
+                prevReadingDate.put(
+                    "DataToPrint",
+                    formatText(28, "From :", printData?.bill?.previousreading_date ?: "")
+                )
+                prevReadingDate.put("IsCenterAligned", false)
+                prevReadingDate.put("ImagePath", "")
+                prevReadingDate.put("ImageData", "")
+
+
+                val currReading = JSONObject()
+                currReading.put("PrintDataType", 0)
+                currReading.put("PrinterWidth", 28)
+                currReading.put(
+                    "DataToPrint",
+                    formatText(28, "Close :", printData?.bill?.present_reading ?: "0")
+                )
+                currReading.put("IsCenterAligned", false)
+                currReading.put("ImagePath", "")
+                currReading.put("ImageData", "")
+                val currReadingDate = JSONObject()
+                currReadingDate.put("PrintDataType", 0)
+                currReadingDate.put("PrinterWidth", 28)
+                currReadingDate.put(
+                    "DataToPrint",
+                    formatText(28, "To :", printData?.bill?.presentreading_date ?: "")
+                )
+                currReadingDate.put("IsCenterAligned", false)
+                currReadingDate.put("ImagePath", "")
+                currReadingDate.put("ImageData", "")
+
+
+                val units = JSONObject()
+                units.put("PrintDataType", 0)
+                units.put("PrinterWidth", 28)
+                units.put("DataToPrint", formatText(28, "Units (KL) :", printData?.bill?.units ?: "0"))
+                units.put("IsCenterAligned", false)
+                units.put("ImagePath", "")
+                units.put("ImageData", "")
+
+                //---------------------------------------------
 
                 val arrearAmount = JSONObject()
                 arrearAmount.put("PrintDataType", 0)
@@ -303,6 +413,7 @@ class CollectBillDetailsFragment : Fragment() {
                 arrearAmount.put("IsCenterAligned", false)
                 arrearAmount.put("ImagePath", "")
                 arrearAmount.put("ImageData", "")
+
 
                 val fwsAmount = JSONObject()
                 fwsAmount.put("PrintDataType", 0)
@@ -338,6 +449,7 @@ class CollectBillDetailsFragment : Fragment() {
                 paidAmount.put("ImagePath", "")
                 paidAmount.put("ImageData", "")
 
+
                 val billAmount = JSONObject()
                 billAmount.put("PrintDataType", 0)
                 billAmount.put("PrinterWidth", 28)
@@ -358,8 +470,6 @@ class CollectBillDetailsFragment : Fragment() {
                 gap.put("ImagePath", "")
                 gap.put("ImageData", "")
 
-
-
                 val gaps = JSONObject()
                 gaps.put("PrintDataType", 0)
                 gaps.put("PrinterWidth", 24)
@@ -375,8 +485,9 @@ class CollectBillDetailsFragment : Fragment() {
                     "DataToPrint",
                     formatText(
                         28,
-                        "" ,
-                        "Sd/-")
+                        "",
+                        "Sd/-"
+                    )
                 )
 
                 sd.put("IsCenterAligned", false)
@@ -390,8 +501,9 @@ class CollectBillDetailsFragment : Fragment() {
                     "DataToPrint",
                     formatText(
                         28,
-                        "" ,
-                        "For CEO, SCB")
+                        "",
+                        "For CEO, SCB"
+                    )
                 )
 
                 ceo.put("IsCenterAligned", false)
@@ -413,7 +525,6 @@ class CollectBillDetailsFragment : Fragment() {
                 emptyGap.put("IsCenterAligned", true)
                 emptyGap.put("ImagePath", "")
                 emptyGap.put("ImageData", "")
-
                 arrayData.put(scbName)
                 arrayData.put(emptyGap)
                 arrayData.put(noticeTitle)
@@ -423,6 +534,22 @@ class CollectBillDetailsFragment : Fragment() {
                 arrayData.put(emptyGap)
                 arrayData.put(billNo)
                 arrayData.put(emptyGap)
+//                if (args.customerResponse.is_fws == 1) {
+                arrayData.put(adhaarStatus)
+                arrayData.put(emptyGap)
+                arrayData.put(meterStatus)
+                arrayData.put(emptyGap)
+//                    arrayData.put(prevReading)
+//                    arrayData.put(emptyGap)
+//                    arrayData.put(currReading)
+//                    arrayData.put(emptyGap)
+                arrayData.put(units)
+                arrayData.put(emptyGap)
+                arrayData.put(prevReadingDate)
+                arrayData.put(emptyGap)
+                arrayData.put(currReadingDate)
+                arrayData.put(emptyGap)
+//                }
                 arrayData.put(ucnNo)
                 arrayData.put(emptyGap)
                 arrayData.put(ownerName)
@@ -431,7 +558,11 @@ class CollectBillDetailsFragment : Fragment() {
                 arrayData.put(emptyGap)
                 arrayData.put(location)
                 arrayData.put(emptyGap)
-                arrayData.put(mobileNo)
+//                arrayData.put(mobileNo)
+//                arrayData.put(emptyGap)
+                arrayData.put(category)
+                arrayData.put(emptyGap)
+                arrayData.put(pipeSize)
                 arrayData.put(emptyGap)
                 arrayData.put(currentMonth)
                 arrayData.put(emptyGap)

@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import com.blankj.utilcode.util.KeyboardUtils
 import com.keka.xhr.core.app.di.CustomDialogQualifier
 import com.scb.scbbillingandcollection.R
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
@@ -86,10 +87,10 @@ class GenerateCanListFragment : Fragment() {
         }
 
         binding.searchCan.clickWithDebounce {
-            if (binding.ucnNo.text.toString().length < 4) {
+            if (binding.ucnNo.text.toString().length < 3) {
                 showCustomToast(title = "Enter Valid UCN Number")
             } else {
-
+                KeyboardUtils.hideSoftInput(requireView())
                 lifecycleScope.launch {
                     getUCNInfo(GetCan(binding.ucnNo.text.toString().trim()))
                 }
@@ -206,19 +207,13 @@ class GenerateCanListFragment : Fragment() {
         when (val response = repository.searchUCN(ucn)) {
             is Resource.Success -> {
                 if (response.value.ucn_details != null) {
-                    if (args.fromGenerate) {
-                        findNavController().navigate(
-                            GenerateCanListFragmentDirections.actionGenerateCanListFragmentToBillDetailsFragment(
-                                response.value.ucn_details
-                            )
-                        )
-
-                    } else {
-                        findNavController().navigate(
-                            GenerateCanListFragmentDirections.actionGenerateCanListFragmentToCollectBillDetailsFragment(
-                                response.value.ucn_details
-                            )
-                        )
+                    response.value.ucn_details?.let {
+                        if (it.isEmpty()) {
+                            showCustomToast(title = "No Data Found")
+                        }
+                        binding.searchView.isVisible = true
+                        adapter.submitList(it)
+                        dialog.dismissCompact()
                     }
                 } else {
                     showCustomToast(title = "Invalid UCN")

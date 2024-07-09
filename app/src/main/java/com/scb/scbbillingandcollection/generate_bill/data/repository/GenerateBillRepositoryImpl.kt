@@ -7,6 +7,7 @@ import com.scb.scbbillingandcollection.collect_bill.models.CollectionModel
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
 import com.scb.scbbillingandcollection.collect_bill.models.GetCollection
+import com.scb.scbbillingandcollection.collect_bill.models.UpdateSCB
 import com.scb.scbbillingandcollection.core.retrofit.ApiInterface
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.core.retrofit.SafeApiCall
@@ -16,11 +17,13 @@ import com.scb.scbbillingandcollection.generate_bill.data.models.DemandAndCollec
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.UCNDetails
+import com.scb.scbbillingandcollection.generate_bill.data.models.UpdateScbResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.WardsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: ApiInterface) : SafeApiCall,
@@ -105,6 +108,15 @@ class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: A
     override suspend fun getReports(request: GetCollection): Resource<CollectionModel> {
         val response = safeApiCall {
             apiInterface.getCollections(request)
+        }
+        return if (response is Resource.Success) {
+            Resource.Success(response.value)
+        } else response
+    }
+
+    override suspend fun updateSCBNo(request: UpdateSCB): Resource<UpdateScbResponse> {
+        val response = safeApiCall {
+            apiInterface.updateSCBNo(request)
         }
         return if (response is Resource.Success) {
             Resource.Success(response.value)

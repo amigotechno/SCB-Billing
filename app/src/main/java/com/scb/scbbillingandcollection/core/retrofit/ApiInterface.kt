@@ -11,14 +11,17 @@ import com.scb.scbbillingandcollection.collect_bill.models.CollectionModel
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
 import com.scb.scbbillingandcollection.collect_bill.models.GetCollection
+import com.scb.scbbillingandcollection.collect_bill.models.UpdateSCB
 import com.scb.scbbillingandcollection.generate_bill.data.models.BeatsResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.DemandAndCollectBill
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.GenerateBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.UCNDetails
+import com.scb.scbbillingandcollection.generate_bill.data.models.UpdateScbResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillRequest
 import com.scb.scbbillingandcollection.generate_bill.data.models.ViewBillResponse
 import com.scb.scbbillingandcollection.generate_bill.data.models.WardsResponse
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -58,5 +61,8 @@ interface ApiInterface {
 
     @POST("getCollections.json")
     suspend fun getCollections(@Body request: GetCollection): CollectionModel
+
+    @POST("updateScbNo.json")
+    suspend fun updateSCBNo(@Body request: UpdateSCB): UpdateScbResponse
 
 }

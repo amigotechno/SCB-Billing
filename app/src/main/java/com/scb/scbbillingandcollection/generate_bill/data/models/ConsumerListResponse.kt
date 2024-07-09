@@ -25,5 +25,5 @@ data class Consumers(
     val payable_amount: String?,
     val last_billed_date: String?,
     val plot_no: String?,
+    val is_fws: Int?,
 ):Parcelable
-

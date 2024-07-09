@@ -44,5 +44,15 @@ data class GenerateBillResponse(
     val bill_number:String?,
     val bill_date:String?,
     val message:String?,
+    val previous_reading:String?,
+    val previous_reading_date:String?,
+    val present_reading_date:String?,
+    val present_reading:String?,
+    val units:String?,
+)
+
+data class UpdateScbResponse(
+    val error:Int?,
+    val message:String?,
 )
 

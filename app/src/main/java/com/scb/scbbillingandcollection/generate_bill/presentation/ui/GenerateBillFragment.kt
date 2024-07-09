@@ -73,6 +73,11 @@ class GenerateBillFragment : Fragment() {
 
     var receiptNo = ""
     var billDate = ""
+    var previous_reading = ""
+    var previous_reading_date = ""
+    var present_reading = ""
+    var present_reading_date = ""
+    var unitsText = ""
     val CAMERA_REQUEST_CODE = 102
     var latitude = "0.0"
     var longitude = "0.0"
@@ -295,6 +300,11 @@ class GenerateBillFragment : Fragment() {
                 showCustomToast(R.drawable.ic_check_green, title = it)
                 receiptNo = it
                 billDate = response.billDate.toString()
+                previous_reading = response.prevReading.toString()
+                previous_reading_date = response.prevReadingDate?:""
+                present_reading_date = response.presentReadingDate?:""
+                present_reading = response.presentReading.toString()
+                unitsText = response.units.toString()
                 findNavController().navigate(
                     GenerateBillFragmentDirections.actionGenerateFragmentToGenerateCanListFragment(
                         true
@@ -382,7 +392,7 @@ class GenerateBillFragment : Fragment() {
                 ucnNo.put("PrinterWidth", 28)
                 ucnNo.put(
                     "DataToPrint",
-                    formatText(28, "UCN No :", args.customerResponse.can_number.toString())
+                    formatText(28, "UCN No :", args.ucnDetails.can_number.toString())
                 )
                 ucnNo.put("IsCenterAligned", false)
                 ucnNo.put("ImagePath", "")
@@ -391,14 +401,14 @@ class GenerateBillFragment : Fragment() {
                 val ownerName = JSONObject()
                 ownerName.put("PrintDataType", 0)
                 ownerName.put("PrinterWidth", 28)
-                if (args.customerResponse.consumer_name.toString().length > 14) {
+                if (args.ucnDetails.consumer_name.toString().length > 14) {
                     ownerName.put(
-                        "DataToPrint", "Name : " + args.customerResponse.consumer_name.toString()
+                        "DataToPrint", "Name : " + args.ucnDetails.consumer_name.toString()
                     )
                 } else {
                     ownerName.put(
                         "DataToPrint",
-                        formatText(28, "Name :", args.customerResponse.consumer_name.toString())
+                        formatText(28, "Name :", args.ucnDetails.consumer_name.toString())
                     )
                 }
                 ownerName.put("IsCenterAligned", false)
@@ -407,14 +417,14 @@ class GenerateBillFragment : Fragment() {
                 val plotNo = JSONObject()
                 plotNo.put("PrintDataType", 0)
                 plotNo.put("PrinterWidth", 28)
-                if (args.customerResponse.plot_no.toString().length > 14) {
+                if (args.ucnDetails.plot_no.toString().length > 14) {
                     plotNo.put(
-                        "DataToPrint", "Plot No : " + args.customerResponse.plot_no.toString()
+                        "DataToPrint", "Plot No : " + args.ucnDetails.plot_no.toString()
                     )
                 } else {
                     plotNo.put(
                         "DataToPrint",
-                        formatText(28, "Plot No :", args.customerResponse.plot_no.toString())
+                        formatText(28, "Plot No :", args.ucnDetails.plot_no.toString())
                     )
                 }
                 plotNo.put("IsCenterAligned", false)
@@ -424,30 +434,52 @@ class GenerateBillFragment : Fragment() {
                 val location = JSONObject()
                 location.put("PrintDataType", 0)
                 location.put("PrinterWidth", 28)
-                if (args.customerResponse.location.toString().length > 14) {
+                if (args.ucnDetails.location.toString().length > 14) {
                     location.put(
-                        "DataToPrint", "Address : " + args.customerResponse.location.toString()
+                        "DataToPrint", "Address : " + args.ucnDetails.location.toString()
                     )
                 } else {
                     location.put(
                         "DataToPrint",
-                        formatText(28, "Address :", args.customerResponse.location.toString())
+                        formatText(28, "Address :", args.ucnDetails.location.toString())
                     )
                 }
                 location.put("IsCenterAligned", false)
                 location.put("ImagePath", "")
                 location.put("ImageData", "")
 
-                val mobileNo = JSONObject()
-                mobileNo.put("PrintDataType", 0)
-                mobileNo.put("PrinterWidth", 28)
-                mobileNo.put(
+//                val mobileNo = JSONObject()
+//                mobileNo.put("PrintDataType", 0)
+//                mobileNo.put("PrinterWidth", 28)
+//                mobileNo.put(
+//                    "DataToPrint",
+//                    formatText(28, "Mobile No :", args.ucnDetails.phone_no.toString())
+//                )
+//                mobileNo.put("IsCenterAligned", false)
+//                mobileNo.put("ImagePath", "")
+//                mobileNo.put("ImageData", "")
+
+                val pipeSize = JSONObject()
+                pipeSize.put("PrintDataType", 0)
+                pipeSize.put("PrinterWidth", 28)
+                pipeSize.put(
                     "DataToPrint",
-                    formatText(28, "Mobile No :", args.customerResponse.phone_no.toString())
+                    formatText(28, "Pipe Size :", args.ucnDetails.pipe_size.toString())
                 )
-                mobileNo.put("IsCenterAligned", false)
-                mobileNo.put("ImagePath", "")
-                mobileNo.put("ImageData", "")
+                pipeSize.put("IsCenterAligned", false)
+                pipeSize.put("ImagePath", "")
+                pipeSize.put("ImageData", "")
+
+                val category = JSONObject()
+                category.put("PrintDataType", 0)
+                category.put("PrinterWidth", 28)
+                category.put(
+                    "DataToPrint",
+                    formatText(28, "Category :", args.ucnDetails.category.toString())
+                )
+                category.put("IsCenterAligned", false)
+                category.put("ImagePath", "")
+                category.put("ImageData", "")
 
                 val currentDemand = JSONObject()
                 currentDemand.put("PrintDataType", 0)
@@ -475,6 +507,66 @@ class GenerateBillFragment : Fragment() {
                 billNo.put("IsCenterAligned", false)
                 billNo.put("ImagePath", "")
                 billNo.put("ImageData", "")
+
+                /// FWS
+                val adhaarStatus = JSONObject()
+                adhaarStatus.put("PrintDataType", 0)
+                adhaarStatus.put("PrinterWidth", 28)
+                adhaarStatus.put("DataToPrint", formatText(28, "Aadhaar Status:", args.ucnDetails.aadhar_status?:""))
+                adhaarStatus.put("IsCenterAligned", false)
+                adhaarStatus.put("ImagePath", "")
+                adhaarStatus.put("ImageData", "")
+
+                val meterStatus = JSONObject()
+                meterStatus.put("PrintDataType", 0)
+                meterStatus.put("PrinterWidth", 28)
+                meterStatus.put("DataToPrint", formatText(28, "Meter Status :", args.ucnDetails.meter_status?:""))
+                meterStatus.put("IsCenterAligned", false)
+                meterStatus.put("ImagePath", "")
+                meterStatus.put("ImageData", "")
+
+
+                val prevReading = JSONObject()
+                prevReading.put("PrintDataType", 0)
+                prevReading.put("PrinterWidth", 28)
+                prevReading.put("DataToPrint", formatText(28, "Open :", previous_reading))
+                prevReading.put("IsCenterAligned", false)
+                prevReading.put("ImagePath", "")
+                prevReading.put("ImageData", "")
+
+                val prevReadingDate = JSONObject()
+                prevReadingDate.put("PrintDataType", 0)
+                prevReadingDate.put("PrinterWidth", 28)
+                prevReadingDate.put("DataToPrint", formatText(28, "From :", previous_reading_date?:""))
+                prevReadingDate.put("IsCenterAligned", false)
+                prevReadingDate.put("ImagePath", "")
+                prevReadingDate.put("ImageData", "")
+
+                val currReading = JSONObject()
+                currReading.put("PrintDataType", 0)
+                currReading.put("PrinterWidth", 28)
+                currReading.put("DataToPrint", formatText(28, "Close :", present_reading))
+                currReading.put("IsCenterAligned", false)
+                currReading.put("ImagePath", "")
+                currReading.put("ImageData", "")
+
+                val currReadingDate = JSONObject()
+                currReadingDate.put("PrintDataType", 0)
+                currReadingDate.put("PrinterWidth", 28)
+                currReadingDate.put("DataToPrint", formatText(28, "To :", present_reading_date?:""))
+                currReadingDate.put("IsCenterAligned", false)
+                currReadingDate.put("ImagePath", "")
+                currReadingDate.put("ImageData", "")
+
+                val units = JSONObject()
+                units.put("PrintDataType", 0)
+                units.put("PrinterWidth", 28)
+                units.put("DataToPrint", formatText(28, "Units :", unitsText))
+                units.put("IsCenterAligned", false)
+                units.put("ImagePath", "")
+                units.put("ImageData", "")
+
+                //---------------------------------------------
 
                 val arrearAmount = JSONObject()
                 arrearAmount.put("PrintDataType", 0)
@@ -581,6 +673,22 @@ class GenerateBillFragment : Fragment() {
                 arrayData.put(emptyGap)
                 arrayData.put(billNo)
                 arrayData.put(emptyGap)
+//                if (args.customerResponse.is_fws == 1) {
+                    arrayData.put(adhaarStatus)
+                    arrayData.put(emptyGap)
+                    arrayData.put(meterStatus)
+                    arrayData.put(emptyGap)
+                    arrayData.put(prevReading)
+                    arrayData.put(emptyGap)
+                    arrayData.put(currReading)
+                    arrayData.put(emptyGap)
+                    arrayData.put(units)
+                    arrayData.put(emptyGap)
+                    arrayData.put(prevReadingDate)
+                    arrayData.put(emptyGap)
+                    arrayData.put(currReadingDate)
+                    arrayData.put(emptyGap)
+//                }
                 arrayData.put(ucnNo)
                 arrayData.put(emptyGap)
                 arrayData.put(ownerName)
@@ -589,7 +697,11 @@ class GenerateBillFragment : Fragment() {
                 arrayData.put(emptyGap)
                 arrayData.put(location)
                 arrayData.put(emptyGap)
-                arrayData.put(mobileNo)
+//                arrayData.put(mobileNo)
+//                arrayData.put(emptyGap)
+                arrayData.put(category)
+                arrayData.put(emptyGap)
+                arrayData.put(pipeSize)
                 arrayData.put(emptyGap)
                 arrayData.put(currentMonth)
                 arrayData.put(emptyGap)
