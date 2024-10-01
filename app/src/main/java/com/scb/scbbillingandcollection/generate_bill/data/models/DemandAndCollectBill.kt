@@ -25,7 +25,13 @@ data class Bill(
     val rebate_amount: String?,
     val service_charges: String?,
     val total_amount: String?,
-    val units: String?
+    val units: String?,
+    val fws_water_demand: String?,
+    val fws_rebate:String?,
+    val fws_net_demand:String?,
+    val fws_service_charges:String?,
+    val fws_arrears:String?,
+    val fws_total_payable_amount:String?
 )
 
 data class Receipt(
@@ -56,5 +62,6 @@ data class UcnDetailsX(
     val net_demand: String?,
     val no_of_aadhar_reg: String?,
     val pipe_size: String?,
-    val plot_no: String?
+    val plot_no: String?,
+
 ):Parcelable

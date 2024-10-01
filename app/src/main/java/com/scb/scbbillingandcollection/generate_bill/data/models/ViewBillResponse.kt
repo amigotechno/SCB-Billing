@@ -49,6 +49,12 @@ data class GenerateBillResponse(
     val present_reading_date:String?,
     val present_reading:String?,
     val units:String?,
+    val fws_water_demand:String?,
+    val fws_rebate:String?,
+    val fws_net_demand:String?,
+    val fws_service_charges:String?,
+    val fws_arrears:String?,
+    val fws_total_payable_amount:String?,
 )
 
 data class UpdateScbResponse(

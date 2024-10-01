@@ -192,7 +192,13 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
                                         presentReading = response.value.present_reading,
                                         presentReadingDate = response.value.present_reading_date,
                                         units = response.value.units,
-                                        error = null
+                                        error = null,
+                                        fwsRebate = response.value.fws_rebate,
+                                        fwsTotalPayableAmount = response.value.fws_total_payable_amount,
+                                        fwsArrears = response.value.fws_arrears,
+                                        fwsServiceCharges = response.value.fws_service_charges,
+                                        fwsWaterDemand = response.value.fws_water_demand,
+                                        fwsNetDemand = response.value.fws_net_demand,
                                     )
                                 )
                             } else {
@@ -313,7 +319,6 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
         data class ViewBill(val request: ViewBillRequest) : BillActions()
         data class GenerateBill(val request: GenerateBillRequest) : BillActions()
         data class CollectBill(val request: CollectBillRequest) : BillActions()
-
         data class GetCansList(val request: CansRequest) : BillActions()
         data class GetBeatsList(val wardNo: String) : BillActions()
 
@@ -330,7 +335,13 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
             val prevReadingDate: String? = null,
             val presentReadingDate: String? = null,
             val units: String? = null,
-            val error: String? = null
+            val error: String? = null,
+            val fwsWaterDemand:String? = null,
+            val fwsRebate:String? = null,
+            val fwsNetDemand:String? = null,
+            val fwsServiceCharges:String? = null,
+            val fwsArrears:String? = null,
+            val fwsTotalPayableAmount:String? = null
         )
 
         data class CollectBillResponse(val data: String? = null, val error: String? = null)
