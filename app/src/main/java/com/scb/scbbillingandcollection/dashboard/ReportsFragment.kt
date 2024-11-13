@@ -2,19 +2,28 @@ package com.scb.scbbillingandcollection.dashboard
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import com.blankj.utilcode.util.ToastUtils
+import com.scb.scbbillingandcollection.R
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionRequest
 import com.scb.scbbillingandcollection.collect_bill.models.GetCollection
 import com.scb.scbbillingandcollection.core.retrofit.Resource
 import com.scb.scbbillingandcollection.databinding.FragmentReportsBinding
 import com.scb.scbbillingandcollection.generate_bill.data.repository.GenerateBillRepositoryImpl
+import com.scb.scbbillingandcollection.generate_bill.presentation.viewmodel.GenerateBillViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -22,13 +31,17 @@ import javax.inject.Inject
 class ReportsFragment : Fragment() {
 
     private lateinit var binding: FragmentReportsBinding
+    private val billViewModel: GenerateBillViewModel by navGraphViewModels(R.id.main_nav_graph) { defaultViewModelProviderFactory }
 
     @Inject
     lateinit var repImpl: GenerateBillRepositoryImpl
 
-    private val adapter = ReportsAdapter {
-
+    private val adapter = ReportsAdapter{
+        findNavController().navigate(ReportsFragmentDirections.actionReportsFragmentToReportDetailsFragment(
+            CollectionRequest(binding.start.text.toString(),it.collect_type)
+        ))
     }
+
     var mYear = 0
     var mMonth = 0
     var mDay = 0
@@ -39,9 +52,16 @@ class ReportsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentReportsBinding.inflate(layoutInflater, container, false)
-        lifecycleScope.launch {
-            getReports()
-        }
+
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+//        val currentDate: String = dateFormat.format(Date())
 
         binding.start.setOnClickListener {
             val c: Calendar = Calendar.getInstance()
@@ -60,6 +80,7 @@ class ReportsFragment : Fragment() {
                         day = "0$day"
                     }
                     binding.start.setText(year.toString() + "-" + monthString + "-" + day)
+                    billViewModel.dateSelect = year.toString() + "-" + monthString + "-" + day
                     lifecycleScope.launch {
                         getReports();
                     }
@@ -71,12 +92,14 @@ class ReportsFragment : Fragment() {
             datePickerDialog.show()
             datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
         }
-        return binding.root
+        lifecycleScope.launch {
+            getReports();
+        }
     }
 
-
     private suspend fun getReports() {
-        val response = repImpl.getReports(GetCollection(binding.start.text.toString()))
+        Log.d("TAG", "getReports: "+binding.start.text)
+        val response = repImpl.getReports(GetCollection(billViewModel.dateSelect))
         when (response) {
             is Resource.Success -> {
 

@@ -3,7 +3,9 @@ package com.scb.scbbillingandcollection.generate_bill.data.repository
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionDetails
 import com.scb.scbbillingandcollection.collect_bill.models.CollectionModel
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionRequest
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
 import com.scb.scbbillingandcollection.collect_bill.models.GetCollection
@@ -34,4 +36,5 @@ interface GenerateBillRepository {
     suspend fun printData(request: GetCanId): Resource<DemandAndCollectBill>
     suspend fun getReports(request: GetCollection): Resource<CollectionModel>
     suspend fun updateSCBNo(request: UpdateSCB): Resource<UpdateScbResponse>
+    suspend fun getCollectionData(request: CollectionRequest): Resource<CollectionDetails>
 }

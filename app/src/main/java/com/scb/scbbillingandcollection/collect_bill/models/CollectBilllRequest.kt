@@ -1,5 +1,8 @@
 package com.scb.scbbillingandcollection.collect_bill.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class CollectBillRequest(
 
     val can_id: String,
@@ -39,3 +42,10 @@ data class UpdateSCB(
     val can_id: String,
     val scb_no: String
 )
+
+@Parcelize
+data class CollectionRequest(
+    val report_date: String,
+    val type: String
+):Parcelable
+

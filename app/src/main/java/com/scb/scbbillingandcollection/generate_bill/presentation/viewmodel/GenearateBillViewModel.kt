@@ -50,6 +50,8 @@ class GenerateBillViewModel @Inject constructor(private val repository: Generate
     var spinnerPosition = 0
     var beatPosition = 0
 
+    public var dateSelect = ""
+
     init {
         viewModelScope.launch {
             getWards()

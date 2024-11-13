@@ -589,7 +589,7 @@ class BillDetailsFragment : Fragment() {
                 totalBalAmount.put("PrinterWidth", 28)
                 totalBalAmount.put(
                     "DataToPrint",
-                    formatText(28, "Total Amt :", printData?.bill?.fws_arrears.toString())
+                    formatText(28, "Total Amt :", printData?.bill?.fws_total_payable_amount.toString())
                 )
                 totalBalAmount.put("IsCenterAligned", false)
                 totalBalAmount.put("ImagePath", "")

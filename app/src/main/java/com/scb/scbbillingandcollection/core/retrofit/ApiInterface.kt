@@ -7,7 +7,9 @@ import com.scb.scbbillingandcollection.auth.data.models.VersionResponse
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionDetails
 import com.scb.scbbillingandcollection.collect_bill.models.CollectionModel
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionRequest
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
 import com.scb.scbbillingandcollection.collect_bill.models.GetCollection
@@ -64,5 +66,8 @@ interface ApiInterface {
 
     @POST("updateScbNo.json")
     suspend fun updateSCBNo(@Body request: UpdateSCB): UpdateScbResponse
+
+    @POST("getCollectionData.json")
+    suspend fun getCollectionData(@Body request: CollectionRequest): CollectionDetails
 
 }

@@ -146,7 +146,11 @@
         android:id="@+id/reportsFragment"
         android:name="com.scb.scbbillingandcollection.dashboard.ReportsFragment"
         android:label="fragment_reports"
-        tools:layout="@layout/fragment_reports" />
+        tools:layout="@layout/fragment_reports" >
+        <action
+            android:id="@+id/action_reportsFragment_to_reportDetailsFragment"
+            app:destination="@id/reportDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/updateSCBFragment"
         android:name="com.scb.scbbillingandcollection.generate_bill.presentation.ui.UpdateSCBFragment"
@@ -155,6 +159,15 @@
         <argument
             android:name="canId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportDetailsFragment"
+        android:name="com.scb.scbbillingandcollection.dashboard.ReportDetailsFragment"
+        android:label="fragment_report_details"
+        tools:layout="@layout/fragment_report_details" >
+        <argument
+            android:name="request"
+            app:argType="com.scb.scbbillingandcollection.collect_bill.models.CollectionRequest" />
     </fragment>
 
 

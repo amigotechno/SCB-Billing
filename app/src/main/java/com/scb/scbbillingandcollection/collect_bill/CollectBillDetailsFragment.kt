@@ -449,6 +449,72 @@ class CollectBillDetailsFragment : Fragment() {
                 paidAmount.put("ImagePath", "")
                 paidAmount.put("ImageData", "")
 
+                val waterDemand = JSONObject()
+                waterDemand.put("PrintDataType", 0)
+                waterDemand.put("PrinterWidth", 28)
+                waterDemand.put(
+                    "DataToPrint",
+                    formatText(28, "Water Demand :", printData?.bill?.fws_water_demand.toString())
+                )
+                waterDemand.put("IsCenterAligned", false)
+                waterDemand.put("ImagePath", "")
+                waterDemand.put("ImageData", "")
+
+                val rebateAmt = JSONObject()
+                rebateAmt.put("PrintDataType", 0)
+                rebateAmt.put("PrinterWidth", 28)
+                rebateAmt.put(
+                    "DataToPrint",
+                    formatText(28, "FWS Rebate :", printData?.bill?.fws_rebate.toString())
+                )
+                rebateAmt.put("IsCenterAligned", false)
+                rebateAmt.put("ImagePath", "")
+                rebateAmt.put("ImageData", "")
+
+                val netDemand = JSONObject()
+                netDemand.put("PrintDataType", 0)
+                netDemand.put("PrinterWidth", 28)
+                netDemand.put(
+                    "DataToPrint",
+                    formatText(28, "Net Demand(A) :", printData?.bill?.fws_net_demand.toString())
+                )
+                netDemand.put("IsCenterAligned", false)
+                netDemand.put("ImagePath", "")
+                netDemand.put("ImageData", "")
+
+                val serviceCharges = JSONObject()
+                serviceCharges.put("PrintDataType", 0)
+                serviceCharges.put("PrinterWidth", 28)
+                serviceCharges.put(
+                    "DataToPrint",
+                    formatText(28, "Service Amt(B) :", printData?.bill?.fws_service_charges.toString())
+                )
+                serviceCharges.put("IsCenterAligned", false)
+                serviceCharges.put("ImagePath", "")
+                serviceCharges.put("ImageData", "")
+
+                val arrears = JSONObject()
+                arrears.put("PrintDataType", 0)
+                arrears.put("PrinterWidth", 28)
+                arrears.put(
+                    "DataToPrint",
+                    formatText(28, "Arrears(C) :", printData?.bill?.fws_arrears.toString())
+                )
+                arrears.put("IsCenterAligned", false)
+                arrears.put("ImagePath", "")
+                arrears.put("ImageData", "")
+
+                val totalBalAmount = JSONObject()
+                totalBalAmount.put("PrintDataType", 0)
+                totalBalAmount.put("PrinterWidth", 28)
+                totalBalAmount.put(
+                    "DataToPrint",
+                    formatText(28, "Total Amt :", printData?.bill?.fws_total_payable_amount.toString())
+                )
+                totalBalAmount.put("IsCenterAligned", false)
+                totalBalAmount.put("ImagePath", "")
+                totalBalAmount.put("ImageData", "")
+
 
                 val billAmount = JSONObject()
                 billAmount.put("PrintDataType", 0)
@@ -565,18 +631,44 @@ class CollectBillDetailsFragment : Fragment() {
                 arrayData.put(pipeSize)
                 arrayData.put(emptyGap)
                 arrayData.put(currentMonth)
-                arrayData.put(emptyGap)
-                arrayData.put(currentDemand)
-                arrayData.put(emptyGap)
-                arrayData.put(arrearAmount)
-                arrayData.put(emptyGap)
-                arrayData.put(fwsAmount)
-                arrayData.put(emptyGap)
-                arrayData.put(totalAmount)
-                arrayData.put(emptyGap)
-                arrayData.put(paidAmount)
-                arrayData.put(gaps)
-                arrayData.put(billAmount)
+//                arrayData.put(emptyGap)
+//                arrayData.put(currentDemand)
+//                arrayData.put(emptyGap)
+//                arrayData.put(arrearAmount)
+//                arrayData.put(emptyGap)
+//                arrayData.put(fwsAmount)
+//                arrayData.put(emptyGap)
+//                arrayData.put(totalAmount)
+//                arrayData.put(emptyGap)
+//                arrayData.put(paidAmount)
+//                arrayData.put(gaps)
+//                arrayData.put(billAmount)
+
+                if(printData?.ucn_details?.is_fws == "1"){
+                    arrayData.put(emptyGap)
+                    arrayData.put(waterDemand)
+                    arrayData.put(emptyGap)
+                    arrayData.put(rebateAmt)
+                    arrayData.put(emptyGap)
+                    arrayData.put(netDemand)
+                    arrayData.put(emptyGap)
+                    arrayData.put(serviceCharges)
+                    arrayData.put(emptyGap)
+                    arrayData.put(arrears)
+                    arrayData.put(gaps)
+                    arrayData.put(totalBalAmount)
+                }else{
+                    arrayData.put(emptyGap)
+                    arrayData.put(currentDemand)
+                    arrayData.put(emptyGap)
+                    arrayData.put(arrearAmount)
+                    arrayData.put(emptyGap)
+                    arrayData.put(totalAmount)
+                    arrayData.put(emptyGap)
+                    arrayData.put(paidAmount)
+                    arrayData.put(gaps)
+                    arrayData.put(billAmount)
+                }
                 arrayData.put(gap)
                 arrayData.put(sd)
                 arrayData.put(ceo)

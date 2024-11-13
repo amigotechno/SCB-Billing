@@ -3,7 +3,9 @@ package com.scb.scbbillingandcollection.generate_bill.data.repository
 import com.scb.scbbillingandcollection.collect_bill.models.CansRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillRequest
 import com.scb.scbbillingandcollection.collect_bill.models.CollectBillResponse
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionDetails
 import com.scb.scbbillingandcollection.collect_bill.models.CollectionModel
+import com.scb.scbbillingandcollection.collect_bill.models.CollectionRequest
 import com.scb.scbbillingandcollection.collect_bill.models.GetCan
 import com.scb.scbbillingandcollection.collect_bill.models.GetCanId
 import com.scb.scbbillingandcollection.collect_bill.models.GetCollection
@@ -117,6 +119,15 @@ class GenerateBillRepositoryImpl @Inject constructor(private val apiInterface: A
     override suspend fun updateSCBNo(request: UpdateSCB): Resource<UpdateScbResponse> {
         val response = safeApiCall {
             apiInterface.updateSCBNo(request)
+        }
+        return if (response is Resource.Success) {
+            Resource.Success(response.value)
+        } else response
+    }
+
+    override suspend fun getCollectionData(request: CollectionRequest): Resource<CollectionDetails> {
+        val response = safeApiCall {
+            apiInterface.getCollectionData(request)
         }
         return if (response is Resource.Success) {
             Resource.Success(response.value)
